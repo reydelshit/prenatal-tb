@@ -25,6 +25,10 @@ const router = createBrowserRouter([
         path: 'records',
         element: <Records />,
       },
+      {
+        path: 'records/:id',
+        element: <div>Invoice</div>,
+      },
     ],
   },
 ])

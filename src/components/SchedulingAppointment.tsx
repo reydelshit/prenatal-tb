@@ -1,337 +1,213 @@
-import Paper from '@mui/material/Paper'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
+import { useState } from 'react'
+import {
+  EventApi,
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+  formatDate,
+} from '@fullcalendar/core'
+
+import timeGridPlugin from '@fullcalendar/timegrid'
+
+import { EventInput } from '@fullcalendar/core'
+import { Input } from './ui/input'
+import { Button } from './ui/button'
 
 import {
-  Scheduler,
-  WeekView,
-  Appointments,
-  // @ts-ignore
-} from '@devexpress/dx-react-scheduler-material-ui'
-// @ts-ignore
-import { ViewState } from '@devexpress/dx-react-scheduler'
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Label } from './ui/label'
 
-export const appointments = [
+let eventGuid = 0
+let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+
+export const INITIAL_APPOINTMENTS: EventInput[] = [
   {
-    title: 'Website Re-Design Plan',
-    startDate: new Date(2018, 5, 25, 9, 35),
-    endDate: new Date(2018, 5, 25, 11, 30),
-    id: 0,
-    location: 'Room 1',
+    id: createEventId(),
+    title: ' All-day appointment',
+    start: todayStr,
   },
   {
-    title: 'Book Flights to San Fran for Sales Trip',
-    startDate: new Date(2018, 5, 25, 12, 11),
-    endDate: new Date(2018, 5, 25, 13, 0),
-    id: 1,
-    location: 'Room 1',
-  },
-  {
-    title: 'Install New Router in Dev Room',
-    startDate: new Date(2018, 5, 25, 14, 30),
-    endDate: new Date(2018, 5, 25, 15, 35),
-    id: 2,
-    location: 'Room 2',
-  },
-  {
-    title: 'Approve Personal Computer Upgrade Plan',
-    startDate: new Date(2018, 5, 26, 10, 0),
-    endDate: new Date(2018, 5, 26, 11, 0),
-    id: 3,
-    location: 'Room 2',
-  },
-  {
-    title: 'Final Budget Review',
-    startDate: new Date(2018, 5, 26, 12, 0),
-    endDate: new Date(2018, 5, 26, 13, 35),
-    id: 4,
-    location: 'Room 2',
-  },
-  {
-    title: 'New Brochures',
-    startDate: new Date(2018, 5, 26, 14, 30),
-    endDate: new Date(2018, 5, 26, 15, 45),
-    id: 5,
-    location: 'Room 2',
-  },
-  {
-    title: 'Install New Database',
-    startDate: new Date(2018, 5, 27, 9, 45),
-    endDate: new Date(2018, 5, 27, 11, 15),
-    id: 6,
-    location: 'Room 1',
-  },
-  {
-    title: 'Approve New Online Marketing Strategy',
-    startDate: new Date(2018, 5, 27, 12, 0),
-    endDate: new Date(2018, 5, 27, 14, 0),
-    id: 7,
-    location: 'Room 3',
-  },
-  {
-    title: 'Upgrade Personal Computers',
-    startDate: new Date(2018, 5, 27, 15, 15),
-    endDate: new Date(2018, 5, 27, 16, 30),
-    id: 8,
-    location: 'Room 3',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 5, 28, 11, 0),
-    endDate: new Date(2018, 5, 28, 12, 0),
-    id: 9,
-    location: 'Room 3',
-  },
-  {
-    title: 'Prepare 2015 Marketing Plan',
-    startDate: new Date(2018, 5, 28, 11, 0),
-    endDate: new Date(2018, 5, 28, 13, 30),
-    id: 10,
-    location: 'Room 1',
-  },
-  {
-    title: 'Brochure Design Review',
-    startDate: new Date(2018, 5, 28, 14, 0),
-    endDate: new Date(2018, 5, 28, 15, 30),
-    id: 11,
-    location: 'Room 2',
-  },
-  {
-    title: 'Create Icons for Website',
-    startDate: new Date(2018, 5, 29, 10, 0),
-    endDate: new Date(2018, 5, 29, 11, 30),
-    id: 12,
-    location: 'Room 2',
-  },
-  {
-    title: 'Upgrade Server Hardware',
-    startDate: new Date(2018, 5, 29, 14, 30),
-    endDate: new Date(2018, 5, 29, 16, 0),
-    id: 13,
-    location: 'Room 3',
-  },
-  {
-    title: 'Submit New Website Design',
-    startDate: new Date(2018, 5, 29, 16, 30),
-    endDate: new Date(2018, 5, 29, 18, 0),
-    id: 14,
-    location: 'Room 3',
-  },
-  {
-    title: 'Launch New Website',
-    startDate: new Date(2018, 5, 29, 12, 20),
-    endDate: new Date(2018, 5, 29, 14, 0),
-    id: 15,
-    location: 'Room 2',
-  },
-  {
-    title: 'Website Re-Design Plan',
-    startDate: new Date(2018, 6, 2, 9, 30),
-    endDate: new Date(2018, 6, 2, 15, 30),
-    id: 16,
-    location: 'Room 1',
-  },
-  {
-    title: 'Book Flights to San Fran for Sales Trip',
-    startDate: new Date(2018, 6, 2, 12, 0),
-    endDate: new Date(2018, 6, 2, 13, 0),
-    id: 17,
-    location: 'Room 3',
-  },
-  {
-    title: 'Install New Router in Dev Room',
-    startDate: new Date(2018, 6, 2, 14, 30),
-    endDate: new Date(2018, 6, 2, 17, 30),
-    id: 18,
-    location: 'Room 2',
-  },
-  {
-    title: 'Approve Personal Computer Upgrade Plan',
-    startDate: new Date(2018, 6, 2, 16, 0),
-    endDate: new Date(2018, 6, 3, 9, 0),
-    id: 19,
-    location: 'Room 2',
-  },
-  {
-    title: 'Final Budget Review',
-    startDate: new Date(2018, 6, 3, 10, 15),
-    endDate: new Date(2018, 6, 3, 13, 35),
-    id: 20,
-    location: 'Room 1',
-  },
-  {
-    title: 'New Brochures',
-    startDate: new Date(2018, 6, 3, 14, 30),
-    endDate: new Date(2018, 6, 3, 15, 45),
-    id: 21,
-    location: 'Room 3',
-  },
-  {
-    title: 'Install New Database',
-    startDate: new Date(2018, 6, 3, 15, 45),
-    endDate: new Date(2018, 6, 4, 12, 15),
-    id: 22,
-    location: 'Room 3',
-  },
-  {
-    title: 'Approve New Online Marketing Strategy',
-    startDate: new Date(2018, 6, 4, 12, 35),
-    endDate: new Date(2018, 6, 4, 14, 15),
-    id: 23,
-    location: 'Room 3',
-  },
-  {
-    title: 'Upgrade Personal Computers',
-    startDate: new Date(2018, 6, 4, 15, 15),
-    endDate: new Date(2018, 6, 4, 20, 30),
-    id: 24,
-    location: 'Room 2',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 6, 5, 6, 0),
-    endDate: new Date(2018, 6, 5, 14, 20),
-    id: 25,
-    location: 'Room 1',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 6, 5, 14, 35),
-    endDate: new Date(2018, 6, 5, 16, 20),
-    id: 26,
-    location: 'Room 1',
-  },
-  {
-    title: 'Customer Workshop 2',
-    startDate: new Date(2018, 6, 5, 10, 0),
-    endDate: new Date(2018, 6, 5, 11, 20),
-    id: 27,
-    location: 'Room 2',
-  },
-  {
-    title: 'Prepare 2015 Marketing Plan',
-    startDate: new Date(2018, 6, 5, 20, 0),
-    endDate: new Date(2018, 6, 6, 13, 30),
-    id: 28,
-    location: 'Room 3',
-  },
-  {
-    title: 'Brochure Design Review',
-    startDate: new Date(2018, 6, 6, 14, 10),
-    endDate: new Date(2018, 6, 6, 15, 30),
-    id: 29,
-    location: 'Room 3',
-  },
-  {
-    title: 'Create Icons for Website',
-    startDate: new Date(2018, 6, 6, 10, 0),
-    endDate: new Date(2018, 6, 7, 14, 30),
-    id: 30,
-    location: 'Room 1',
-  },
-  {
-    title: 'Upgrade Server Hardware',
-    startDate: new Date(2018, 6, 3, 9, 30),
-    endDate: new Date(2018, 6, 3, 12, 25),
-    id: 31,
-    location: 'Room 2',
-  },
-  {
-    title: 'Submit New Website Design',
-    startDate: new Date(2018, 6, 3, 12, 30),
-    endDate: new Date(2018, 6, 3, 18, 0),
-    id: 32,
-    location: 'Room 2',
-  },
-  {
-    title: 'Launch New Website',
-    startDate: new Date(2018, 6, 3, 12, 20),
-    endDate: new Date(2018, 6, 3, 14, 10),
-    id: 33,
-    location: 'Room 2',
-  },
-  {
-    title: 'Book Flights to San Fran for Sales Trip',
-    startDate: new Date(2018, 5, 26, 0, 0),
-    endDate: new Date(2018, 5, 27, 0, 0),
-    id: 34,
-    location: 'Room 1',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 5, 29, 10, 0),
-    endDate: new Date(2018, 5, 30, 14, 30),
-    id: 35,
-    location: 'Room 1',
-  },
-  {
-    title: 'Google AdWords Strategy',
-    startDate: new Date(2018, 6, 3, 0, 0),
-    endDate: new Date(2018, 6, 4, 10, 30),
-    id: 36,
-    location: 'Room 3',
-  },
-  {
-    title: 'Rollout of New Website and Marketing Brochures',
-    startDate: new Date(2018, 6, 5, 10, 0),
-    endDate: new Date(2018, 6, 9, 14, 30),
-    id: 37,
-    location: 'Room 3',
-  },
-  {
-    title: 'Update NDA Agreement',
-    startDate: new Date(2018, 6, 1, 10, 0),
-    endDate: new Date(2018, 6, 3, 14, 30),
-    id: 38,
-    location: 'Room 2',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 6, 1),
-    endDate: new Date(2018, 6, 2),
-    allDay: true,
-    id: 39,
-    location: 'Room 1',
+    id: createEventId(),
+    title: ' Timed appointment',
+    start: todayStr + 'T12:00:00',
   },
 ]
 
+export function createEventId() {
+  return String(eventGuid++)
+}
+
 export default function SchedulingAppointment() {
-  // const schedulerData = [
-  //   {
-  //     startDate: '2018-11-01T09:45',
-  //     endDate: '2018-11-01T11:00',
-  //     title: 'Meeting',
-  //   },
-  //   {
-  //     startDate: '2018-11-01T12:00',
-  //     endDate: '2018-11-01T13:30',
-  //     title: 'Go to a gym',
-  //   },
-  // ]
+  const [state, setState] = useState({
+    weekendsVisible: true,
+    currentEvents: [],
+  }) as any
 
-  const Appointment = ({ children, style, ...restProps }: any) => (
-    <Appointments.Appointment
-      {...restProps}
-      style={{
-        ...style,
-        backgroundColor: '#FFC107',
-        borderRadius: '8px',
-      }}
-    >
-      {children}
-    </Appointments.Appointment>
-  )
+  const [addAppointment, setAddAppointment] = useState(false)
+  const [title, setTitle] = useState('' as any)
+  const [selectInfo, setSelectInfo] = useState({} as any)
 
-  const currentDate = '2018-06-27'
-  // const currentDate = new Date()
+  const testHandle = (selectInfo: DateSelectArg) => {
+    console.log(selectInfo)
+
+    setSelectInfo(selectInfo)
+    setAddAppointment(true)
+  }
+
+  const handleDateSelect = (selectInfo: DateSelectArg) => {
+    // setAddAppointment(true)
+
+    // let title = prompt('Please enter a new title for your appointment')
+
+    let calendarApi = selectInfo.view.calendar
+    calendarApi.unselect()
+    if (title) {
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay,
+      })
+      setAddAppointment(false)
+    }
+  }
+
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    if (
+      confirm(
+        `Are you sure you want to delete the event '${clickInfo.event.title}'`,
+      )
+    ) {
+      clickInfo.event.remove()
+    }
+  }
+
+  const handleAppointments = (events: EventApi[]) => {
+    setState({
+      currentEvents: events,
+    })
+  }
+
+  const renderSidebar = () => {
+    return (
+      <div className="border-2 w-[18rem] p-2">
+        <div>
+          <h2>Instructions:</h2>
+          <div className="indent-1 text-left text-sm">
+            <li>Select dates and you will be prompted to create a new event</li>
+            <li>Drag, drop, and resize events</li>
+            <li>Click an event to delete it</li>
+          </div>
+        </div>
+
+        <div className="border-2 mt-[2rem] list-none">
+          <h2 className="font-bold">
+            All Appointments ({state.currentEvents.length})
+          </h2>
+          <span>{state.currentEvents.map(renderSidebarEvent)}</span>
+        </div>
+      </div>
+    )
+  }
+
+  const renderEventContent = (eventContent: EventContentArg) => {
+    return (
+      <>
+        <b>{eventContent.timeText}</b>
+        <i>{eventContent.event.title}</i>
+      </>
+    )
+  }
+
+  const renderSidebarEvent = (event: EventApi) => {
+    return (
+      <li key={event.id}>
+        <b>
+          {formatDate(event.start!, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </b>
+        <i>{event.title}</i>
+      </li>
+    )
+  }
 
   return (
-    <div>
-      <Paper>
-        <Scheduler height={660} data={appointments}>
-          <ViewState currentDate={currentDate} />
-          <WeekView startDayHour={9} endDayHour={19} />
-          <Appointments appointmentComponent={Appointment} />
-        </Scheduler>
-      </Paper>
+    <div className="relative">
+      {addAppointment && (
+        <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center items-center">
+          <div className="w-[40%] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem]">
+            <div className="w-full">
+              <Label>Appointment title eg. Reydel - TB</Label>
+              <Input
+                placeholder="Appointment title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 self-end">
+              <Button
+                className="bg-white border-2 text-black"
+                onClick={() => setAddAppointment(false)}
+              >
+                Cancel
+              </Button>
+
+              <Button onClick={() => handleDateSelect(selectInfo)}>
+                Add appointment
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="flex gap-4">
+        {renderSidebar()}
+        <div className="w-[75%]">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            }}
+            eventBackgroundColor="orange"
+            eventBorderColor="orange"
+            initialView="dayGridMonth"
+            editable={true}
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={true}
+            initialEvents={INITIAL_APPOINTMENTS} // alternatively, use the `events` setting to fetch from a feed
+            select={testHandle}
+            eventContent={renderEventContent} // custom render function
+            eventClick={handleEventClick}
+            eventsSet={handleAppointments} // called after events are initialized/added/changed/removed
+            /* you can update a remote database when these fire:
+            eventAdd={function(){}}
+            eventChange={function(){}}
+            eventRemove={function(){}}
+
+            bac
+            */
+          />
+        </div>
+      </div>
     </div>
   )
 }

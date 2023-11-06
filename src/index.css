@@ -67,3 +67,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.fc-button {
+  background-color: orange !important;
+  border: none !important;
+  outline: none !important;
+}
