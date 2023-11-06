@@ -44,7 +44,7 @@ export default function HealthCareProvider() {
     console.log('submit')
 
     axios
-      .post('http://localhost/prenatal-tb/add-patient.php', {
+      .post('http://localhost/prenatal-tb/patient.php', {
         ...patientDemogprahy,
         patient_gender: patientGender,
       })

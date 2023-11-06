@@ -23,22 +23,22 @@ import axios from 'axios'
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
 
-export const INITIAL_APPOINTMENTS: EventInput[] = [
-  {
-    id: createEventId(),
-    title: ' All-day appointment',
-    start: todayStr,
-  },
-  {
-    id: createEventId(),
-    title: ' Timed appointment',
-    start: todayStr + 'T12:00:00',
-  },
-]
+// export const INITIAL_APPOINTMENTS: EventInput[] = [
+//   {
+//     id: createEventId(),
+//     title: ' All-day appointment',
+//     start: todayStr,
+//   },
+//   {
+//     id: createEventId(),
+//     title: ' Timed appointment',
+//     start: todayStr + 'T12:00:00',
+//   },
+// ]
 
-export function createEventId() {
-  return String(eventGuid++)
-}
+// export function createEventId() {
+//   return String(eventGuid++)
+// }
 
 export default function SchedulingAppointment() {
   const [state, setState] = useState({
@@ -84,7 +84,6 @@ export default function SchedulingAppointment() {
     calendarApi.unselect()
     if (title) {
       calendarApi.addEvent({
-        id: createEventId(),
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
@@ -115,11 +114,19 @@ export default function SchedulingAppointment() {
   // }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+    console.log(clickInfo.event)
     if (
       confirm(
         `Are you sure you want to delete the event '${clickInfo.event.title}'`,
       )
     ) {
+      axios
+        .delete(
+          `http://localhost/prenatal-tb/appointment.php/${clickInfo.event.id}`,
+        )
+        .then((res) => {
+          console.log(res.data)
+        })
       clickInfo.event.remove()
     }
   }
