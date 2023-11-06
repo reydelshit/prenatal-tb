@@ -17,17 +17,6 @@ import { EventInput } from '@fullcalendar/core'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
 import { Label } from './ui/label'
 
 let eventGuid = 0
@@ -104,7 +93,7 @@ export default function SchedulingAppointment() {
 
   const renderSidebar = () => {
     return (
-      <div className="border-2 w-[18rem] p-2">
+      <div className="w-[18rem] p-2">
         <div>
           <h2>Instructions:</h2>
           <div className="indent-1 text-left text-sm">
@@ -114,7 +103,7 @@ export default function SchedulingAppointment() {
           </div>
         </div>
 
-        <div className="border-2 mt-[2rem] list-none">
+        <div className=" mt-[2rem] list-none">
           <h2 className="font-bold">
             All Appointments ({state.currentEvents.length})
           </h2>

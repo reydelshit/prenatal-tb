@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 export default function Records() {
   return (
     <div>
-      <div className="border-2 w-[80%]">
+      <div className="w-[80%]">
         <Table className="w-full">
           <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>

@@ -11,13 +11,13 @@ export default function Root() {
     <div>
       <Header />
       <div className="flex">
-        <div className="flex flex-col w-[15rem] border-2 p-2">
+        <div className="flex flex-col w-[15rem] p-2">
           <Link to="/">Dashboard</Link>
           <Link to="/add-patient">Add patient</Link>
           <Link to="/scheduling-appointment">Scheduling Appointment</Link>
           <Link to="/records">Records</Link>
         </div>
-        <div className="p-2 border-2 border-orange-500 w-full">
+        <div className="p-2  w-full">
           {location.pathname === '/' ? <App /> : <Outlet />}
         </div>
       </div>
