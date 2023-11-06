@@ -26,9 +26,12 @@ export default function Records() {
           <TableBody>
             <TableRow>
               <TableCell className="font-medium">INV001</TableCell>
-              <Link to="1">
-                <TableCell>Paid</TableCell>
-              </Link>
+
+              <TableCell>
+                {' '}
+                <Link to="1"> Paid</Link>
+              </TableCell>
+
               <TableCell>Credit Card</TableCell>
               <TableCell className="text-right">$250.00</TableCell>
             </TableRow>

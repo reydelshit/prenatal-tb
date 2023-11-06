@@ -6,6 +6,23 @@ import Root from './Root.tsx'
 import HealthCareProvider from './components/HealthCareProvider.tsx'
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
+import Login from './Login.tsx'
+
+const logoutUser = async () => {
+  localStorage.removeItem('user')
+  // return navigate('/login')
+}
+
+const redirectIfUser = async () => {
+  const user = localStorage.getItem('user')
+  const userType = localStorage.getItem('type')
+
+  if (user && userType === 'hprovider') {
+    return (window.location.href = '/add-patient')
+  } else {
+    return <Login />
+  }
+}
 
 const router = createBrowserRouter([
   {
@@ -30,6 +47,15 @@ const router = createBrowserRouter([
         element: <div>Invoice</div>,
       },
     ],
+  },
+  {
+    path: 'login',
+    element: <Login />,
+    loader: redirectIfUser,
+  },
+  {
+    path: 'logout',
+    action: logoutUser,
   },
 ])
 

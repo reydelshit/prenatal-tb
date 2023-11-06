@@ -2,7 +2,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   EventApi,
   DateSelectArg,
@@ -18,6 +18,7 @@ import { Input } from './ui/input'
 import { Button } from './ui/button'
 
 import { Label } from './ui/label'
+import axios from 'axios'
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
@@ -48,6 +49,24 @@ export default function SchedulingAppointment() {
   const [addAppointment, setAddAppointment] = useState(false)
   const [title, setTitle] = useState('' as any)
   const [selectInfo, setSelectInfo] = useState({} as any)
+  const [appointments, setAppointments] = useState<EventInput[]>([])
+
+  const getAppointments = async () => {
+    await axios
+      .get('http://localhost/prenatal-tb/appointment.php')
+      .then((res) => {
+        setAppointments(
+          res.data.map((appointment: EventInput[]) => appointment),
+        )
+        console.log(res.data)
+      })
+  }
+
+  useEffect(() => {
+    getAppointments()
+
+    console.log(appointments, 'useeffect')
+  }, [])
 
   const testHandle = (selectInfo: DateSelectArg) => {
     console.log(selectInfo)
@@ -72,8 +91,28 @@ export default function SchedulingAppointment() {
         allDay: selectInfo.allDay,
       })
       setAddAppointment(false)
+
+      // console.log(selectInfo)
+
+      axios
+        .post('http://localhost/prenatal-tb/appointment.php', {
+          appointment_title: title,
+          start: selectInfo.startStr,
+          end: selectInfo.endStr,
+          allDay: selectInfo.allDay,
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
     }
   }
+
+  // const handleAppointmentsDatabaase = (selectInfo: DateSelectArg) => {
+  //   console.log(selectInfo, 'handle')
+  //   if (title) {
+
+  //   }
+  // }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     if (
@@ -168,33 +207,32 @@ export default function SchedulingAppointment() {
       <div className="flex gap-4">
         {renderSidebar()}
         <div className="w-[75%]">
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay',
-            }}
-            eventBackgroundColor="orange"
-            eventBorderColor="orange"
-            initialView="dayGridMonth"
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            initialEvents={INITIAL_APPOINTMENTS} // alternatively, use the `events` setting to fetch from a feed
-            select={testHandle}
-            eventContent={renderEventContent} // custom render function
-            eventClick={handleEventClick}
-            eventsSet={handleAppointments} // called after events are initialized/added/changed/removed
-            /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-
-            bac
-            */
-          />
+          {appointments.length > 0 && (
+            <FullCalendar
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay',
+              }}
+              eventBackgroundColor="orange"
+              eventBorderColor="orange"
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              initialEvents={appointments} // alternatively, use the `events` setting to fetch from a feed
+              select={testHandle}
+              eventContent={renderEventContent} // custom render function
+              eventClick={handleEventClick}
+              eventsSet={handleAppointments} // called after events are initialized/added/changed/removed
+              // you can update a remote database when these fire:
+              // eventAdd={() => handleAppointmentsDatabaase}
+              // eventChange={function(){}}
+              // eventRemove={function(){}}
+            />
+          )}
         </div>
       </div>
     </div>

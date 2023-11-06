@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import App from './App'
 import Header from './components/Header'
 import { Link } from 'react-router-dom'
+import SideBar from './components/Sidebar'
 
 export default function Root() {
   const location = useLocation()
@@ -11,13 +12,8 @@ export default function Root() {
     <div>
       <Header />
       <div className="flex">
-        <div className="flex flex-col w-[15rem] p-2">
-          <Link to="/">Dashboard</Link>
-          <Link to="/add-patient">Add patient</Link>
-          <Link to="/scheduling-appointment">Scheduling Appointment</Link>
-          <Link to="/records">Records</Link>
-        </div>
-        <div className="p-2  w-full">
+        <SideBar />
+        <div className="p-2 w-full px-[6rem]">
           {location.pathname === '/' ? <App /> : <Outlet />}
         </div>
       </div>

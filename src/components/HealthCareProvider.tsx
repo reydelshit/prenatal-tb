@@ -9,9 +9,23 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import axios from 'axios'
 
 export default function HealthCareProvider() {
+  const [patientUsername, setPatientUsername] = useState<string>('')
+  const [patientPassword, setPatientPassword] = useState<string>('')
   const [patientType, setPatientType] = useState<string>('')
+  const [patientGender, setPatientGender] = useState<string>('')
+  const [patientDemogprahy, setPatientDemogprahy] = useState({
+    patientName: '',
+    patientMiddlename: '',
+    patientLastname: '',
+    patientAge: '',
+    patientBirthday: '',
+    patientGender: '',
+    patientPhone: '',
+    patientEmail: '',
+  })
 
   const handlePatientTypeChange = (event: string) => {
     const selectedValue = event
@@ -19,41 +33,88 @@ export default function HealthCareProvider() {
     // console.log(selectedValue);
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    console.log(name, value)
+    setPatientDemogprahy((values) => ({ ...values, [name]: value }))
+  }
+
+  const handleSubmitPatientDemo = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log('submit')
+
+    axios
+      .post('http://localhost/prenatal-tb/add-patient.php', {
+        ...patientDemogprahy,
+        patient_gender: patientGender,
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
+
+  const handlePatientGenderChange = (event: string) => {
+    const selectedValue = event
+    setPatientGender(selectedValue)
+    // console.log(selectedValue);
+  }
+
   return (
     <div className="w-full flex items-center flex-col p-2">
-      <div className="border-2 w-[80%]">
-        <form className="p-2">
-          <div className="flex gap-2">
+      <div className="border-2 w-[40%]">
+        <form onSubmit={handleSubmitPatientDemo} className="p-2">
+          <div className="flex flex-col gap-2">
             <div className="w-full">
               <Label>First name</Label>
-              <Input className="w-full" />
+              <Input
+                onChange={handleInputChange}
+                name="patient_name"
+                className="w-full"
+              />
             </div>
 
             <div className="w-full">
               <Label>Middle name</Label>
-              <Input className="w-full" />
+              <Input
+                onChange={handleInputChange}
+                name="patient_middlename"
+                className="w-full"
+              />
             </div>
 
             <div className="w-full">
               <Label>Last name</Label>
-              <Input className="w-full" />
+              <Input
+                onChange={handleInputChange}
+                name="patient_lastname"
+                className="w-full"
+              />
             </div>
           </div>
           <div className="flex gap-2">
             <div className="w-full">
               <Label>Age</Label>
-              <Input className="w-full" />
+              <Input
+                onChange={handleInputChange}
+                name="patient_age"
+                className="w-full"
+              />
             </div>
 
             <div className="w-full">
               <Label>Birthday</Label>
-              <Input type="date" className="w-full" />
+              <Input
+                onChange={handleInputChange}
+                name="patient_birthday"
+                type="date"
+                className="w-full"
+              />
             </div>
 
             <div className="w-full ">
-              <Label>Birthday</Label>
+              <Label>Gender</Label>
 
-              <Select>
+              <Select onValueChange={handlePatientGenderChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Gender" />
                 </SelectTrigger>
@@ -64,6 +125,26 @@ export default function HealthCareProvider() {
               </Select>
             </div>
           </div>
+          <div className="flex gap-4">
+            <div className="w-full">
+              <Label>Phone no.</Label>
+              <Input
+                onChange={handleInputChange}
+                name="patient_phone"
+                className="w-full"
+              />
+            </div>
+
+            <div className="w-full">
+              <Label>Email</Label>
+              <Input
+                onChange={handleInputChange}
+                name="patient_email"
+                className="w-full"
+              />
+            </div>
+          </div>
+
           <div className="my-4">
             <Select onValueChange={handlePatientTypeChange}>
               <SelectTrigger className="w-[180px]">
@@ -96,8 +177,8 @@ export default function HealthCareProvider() {
                 <Input className="w-full" />
               </div>
 
-              <div className="mt-2">
-                <Button>Submit</Button>
+              <div className="mt-2 flex w-full items-end justify-end border-2">
+                <Button type="submit">Submit</Button>
               </div>
             </div>
           )}
@@ -124,8 +205,8 @@ export default function HealthCareProvider() {
                 <Input type="text" className="w-full" />
               </div>
 
-              <div className="mt-2">
-                <Button>Submit</Button>
+              <div className="mt-2 flex w-full items-end justify-end border-2">
+                <Button type="submit">Submit</Button>
               </div>
             </div>
           )}
