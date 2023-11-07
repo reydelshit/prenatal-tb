@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import Header from './Header'
 import HealthCareForm from './healthcare/HealthCareForm'
 import RecordsTable from './records/RecordsTable'
+import { Button } from './ui/button'
 
 export default function HealthCareProvider() {
+  const navigate = useNavigate()
   return (
     <div className="min-w-fit ">
       <Header
@@ -15,7 +18,12 @@ export default function HealthCareProvider() {
           <HealthCareForm />
         </div>
         <div className="w-full">
-          <h1>Health Care Provider</h1>
+          <div className="flex justify-between">
+            <h1>Health Care Provider</h1>
+            <Button onClick={() => navigate('/scheduling-appointment')}>
+              Schedule Appointment
+            </Button>
+          </div>
           <RecordsTable />
         </div>
       </div>

@@ -59,7 +59,10 @@ export default function RecordsTable() {
           {patients &&
             patients.map((patient) => {
               return (
-                <TableRow onClick={() => handleNavigate(patient.patient_id)}>
+                <TableRow
+                  className="cursor-pointer"
+                  onClick={() => handleNavigate(patient.patient_id)}
+                >
                   <TableCell>{patient.patient_name}</TableCell>
                   <TableCell>{patient.patient_middlename}</TableCell>
                   <TableCell>{patient.patient_lastname}</TableCell>

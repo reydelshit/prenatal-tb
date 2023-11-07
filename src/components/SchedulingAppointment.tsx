@@ -1,7 +1,14 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { EventDragStartArg } from '@fullcalendar/interaction'
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { DragEventHandler, useEffect, useState } from 'react'
 import {
   EventApi,
@@ -159,22 +166,30 @@ export default function SchedulingAppointment() {
 
   const renderSidebar = () => {
     return (
-      <div className="w-[15rem] p-2">
-        <div>
-          <h2>Instructions:</h2>
-          <div className="indent-1 text-left text-sm">
+      <div className="w-[20rem] ">
+        <Card className="w-full mb-2">
+          <CardHeader>
+            <CardTitle className="text-lg">Instructions</CardTitle>
+          </CardHeader>
+          <CardContent className="text-md">
             <li>Select dates and you will be prompted to create a new event</li>
             <li>Drag, drop, and resize events</li>
             <li>Click an event to delete it</li>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className=" mt-[2rem] list-none">
-          <h2 className="font-bold">
-            All Appointments ({state.currentEvents.length})
-          </h2>
-          <span>{state.currentEvents.map(renderSidebarEvent)}</span>
-        </div>
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-lg">
+              All Appointments ({state.currentEvents.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <span className="text-md">
+              {state.currentEvents.map(renderSidebarEvent)}
+            </span>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -211,7 +226,7 @@ export default function SchedulingAppointment() {
       />
       {addAppointment && (
         <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center items-center">
-          <div className="w-[25rem] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem]">
+          <div className="w-[25rem] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem] mt-[-20rem]">
             <div className="w-full">
               <Label>Appointment title eg. Reydel - TB</Label>
               <Input
