@@ -16,14 +16,14 @@ export default function SideBar() {
   }
 
   return (
-    <div className="w-[15rem] h-screen">
+    <div className="block min-w-[16rem] h-screen bg-violet-50 text-black">
       <div className="border-2 flex flex-col w-full p-4 h-full">
         <div className=" flex flex-col mt-[5rem]">
           <Link className="p-2 border-2 mb-2" to="/">
             Dashboard
           </Link>
-          <Link className="p-2 border-2 mb-2" to="/add-patient">
-            Add patient
+          <Link className="p-2 border-2 mb-2" to="/patient">
+            Patient
           </Link>
           <Link className="p-2 border-2 mb-2" to="/scheduling-appointment">
             Scheduling Appointment

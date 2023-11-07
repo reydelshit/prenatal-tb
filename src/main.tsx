@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './Root.tsx'
-import HealthCareProvider from './components/HealthCareProvider.tsx'
+import HealthCareProvider from './components/Patient.tsx'
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
 import Login from './Login.tsx'
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     errorElement: <div>Not found</div>,
     children: [
       {
-        path: 'add-patient',
+        path: 'patient',
         element: <HealthCareProvider />,
       },
       {

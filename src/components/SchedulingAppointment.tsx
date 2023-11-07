@@ -20,6 +20,7 @@ import { Button } from './ui/button'
 
 import { Label } from './ui/label'
 import axios from 'axios'
+import Header from './Header'
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
@@ -203,7 +204,11 @@ export default function SchedulingAppointment() {
   }
 
   return (
-    <div className="relative w-full border-2 border-orange-500">
+    <div className="relative">
+      <Header
+        title="Schedule Appointment"
+        description="Assign appointment to patients"
+      />
       {addAppointment && (
         <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center items-center">
           <div className="w-[25rem] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem]">
@@ -230,7 +235,7 @@ export default function SchedulingAppointment() {
         </div>
       )}
 
-      <div className="flex gap-4 w-full border-2 border-green-500">
+      <div className="flex gap-4 w-full">
         {renderSidebar()}
         <div className="w-full">
           {appointments.length > 0 && (

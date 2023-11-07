@@ -10,10 +10,9 @@ export default function Root() {
   console.log(location.pathname)
   return (
     <div>
-      <Header />
       <div className="flex w-full ">
         <SideBar />
-        <div className="w-full border-2">
+        <div className="w-full border-2 px-2">
           {location.pathname === '/' ? <App /> : <Outlet />}
         </div>
       </div>
