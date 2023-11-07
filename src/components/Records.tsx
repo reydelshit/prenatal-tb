@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/table'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type PatientType = {
   patient_id: number
@@ -33,6 +33,11 @@ export default function Records() {
   useEffect(() => {
     getAllPatients()
   }, [])
+  const navigate = useNavigate()
+
+  const handleNavigate = (id: number) => {
+    navigate(`/records/patient/${id}`)
+  }
 
   return (
     <div>
@@ -55,7 +60,7 @@ export default function Records() {
             {patients &&
               patients.map((patient) => {
                 return (
-                  <TableRow>
+                  <TableRow onClick={() => handleNavigate(patient.patient_id)}>
                     <TableCell>{patient.patient_name}</TableCell>
                     <TableCell>{patient.patient_middlename}</TableCell>
                     <TableCell>{patient.patient_lastname}</TableCell>

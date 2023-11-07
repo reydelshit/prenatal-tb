@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  width: 100vw;
-  border: 1px solid orange;
+  /* width: 100vw; */
+  /* border: 1px solid orange; */
 }
 
 * {

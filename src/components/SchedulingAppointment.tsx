@@ -1,14 +1,15 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin, { EventDragStartArg } from '@fullcalendar/interaction'
 
-import { useEffect, useState } from 'react'
+import { DragEventHandler, useEffect, useState } from 'react'
 import {
   EventApi,
   DateSelectArg,
   EventClickArg,
   EventContentArg,
   formatDate,
+  EventChangeArg,
 } from '@fullcalendar/core'
 
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -68,7 +69,7 @@ export default function SchedulingAppointment() {
     console.log(appointments, 'useeffect')
   }, [])
 
-  const testHandle = (selectInfo: DateSelectArg) => {
+  const selectDate = (selectInfo: DateSelectArg) => {
     console.log(selectInfo)
 
     setSelectInfo(selectInfo)
@@ -131,6 +132,24 @@ export default function SchedulingAppointment() {
     }
   }
 
+  const handleChangeAppointment = (eventChange: EventChangeArg) => {
+    console.log(eventChange.event.title)
+
+    // console.log('nice')
+    // console.log(eventInfo.event)
+    axios
+      .put('http://localhost/prenatal-tb/appointment.php', {
+        appointment_id: eventChange.event.id,
+        appointment_title: eventChange.event.title,
+        start: eventChange.event.startStr,
+        end: eventChange.event.endStr,
+        allDay: eventChange.event.allDay,
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
+
   const handleAppointments = (events: EventApi[]) => {
     setState({
       currentEvents: events,
@@ -139,7 +158,7 @@ export default function SchedulingAppointment() {
 
   const renderSidebar = () => {
     return (
-      <div className="w-[18rem] p-2">
+      <div className="w-[15rem] p-2">
         <div>
           <h2>Instructions:</h2>
           <div className="indent-1 text-left text-sm">
@@ -170,24 +189,24 @@ export default function SchedulingAppointment() {
 
   const renderSidebarEvent = (event: EventApi) => {
     return (
-      <li key={event.id}>
-        <b>
+      <div className="flex gap-2" key={event.id}>
+        <span>
           {formatDate(event.start!, {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
           })}
-        </b>
-        <i>{event.title}</i>
-      </li>
+        </span>
+        <p className="font-bold">{event.title}</p>
+      </div>
     )
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full border-2 border-orange-500">
       {addAppointment && (
         <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center items-center">
-          <div className="w-[40%] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem]">
+          <div className="w-[25rem] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem]">
             <div className="w-full">
               <Label>Appointment title eg. Reydel - TB</Label>
               <Input
@@ -211,9 +230,9 @@ export default function SchedulingAppointment() {
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 w-full border-2 border-green-500">
         {renderSidebar()}
-        <div className="w-[75%]">
+        <div className="w-full">
           {appointments.length > 0 && (
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -230,13 +249,13 @@ export default function SchedulingAppointment() {
               selectMirror={true}
               dayMaxEvents={true}
               initialEvents={appointments} // alternatively, use the `events` setting to fetch from a feed
-              select={testHandle}
+              select={selectDate}
               eventContent={renderEventContent} // custom render function
               eventClick={handleEventClick}
               eventsSet={handleAppointments} // called after events are initialized/added/changed/removed
               // you can update a remote database when these fire:
               // eventAdd={() => handleAppointmentsDatabaase}
-              // eventChange={function(){}}
+              eventChange={handleChangeAppointment}
               // eventRemove={function(){}}
             />
           )}

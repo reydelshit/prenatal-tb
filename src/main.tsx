@@ -7,6 +7,7 @@ import HealthCareProvider from './components/HealthCareProvider.tsx'
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
 import Login from './Login.tsx'
+import PatientRecords from './components/PatientRecords.tsx'
 
 const logoutUser = async () => {
   localStorage.removeItem('user')
@@ -43,8 +44,8 @@ const router = createBrowserRouter([
         element: <Records />,
       },
       {
-        path: 'records/:id',
-        element: <div>Invoice</div>,
+        path: 'records/patient/:id',
+        element: <PatientRecords />,
       },
     ],
   },
