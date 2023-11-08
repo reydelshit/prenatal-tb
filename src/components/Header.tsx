@@ -1,4 +1,4 @@
-import { SelectSeparator } from './ui/select'
+import { Separator } from '@/components/ui/separator'
 
 export default function Header({
   title,
@@ -8,10 +8,10 @@ export default function Header({
   description: string
 }) {
   return (
-    <div className="h-[8rem] px-5 flex flex-col justify-center mb-2">
+    <div className="h-[8rem] px-2 py-5 flex flex-col justify-center mb-2">
       <h1 className="text-3xl font-bold">{title}</h1>
       <p className="mb-[1.5rem]">{description}</p>
-      <SelectSeparator />
+      <Separator />
     </div>
   )
 }

@@ -48,6 +48,7 @@ type PatientType = {
   patient_gender: string
   patient_email: string
   patient_phone: string
+  patient_type: string
 }
 
 export default function SchedulingAppointment() {
@@ -167,11 +168,17 @@ export default function SchedulingAppointment() {
 
   const [patients, setPatients] = useState<PatientType[]>([])
   const [handleSearchPatient, setHandleSearchPatient] = useState('')
-  const [selectedPatient, setSelectedPatient] = useState('')
+
   const handleSelectedPatient = (selectedPatient: PatientType) => {
     console.log(selectedPatient)
 
-    setTitle(selectedPatient.patient_name)
+    setTitle(
+      selectedPatient.patient_name +
+        ' ' +
+        selectedPatient.patient_lastname +
+        ' - ' +
+        selectedPatient.patient_type,
+    )
   }
 
   const getAllPatients = async () => {
@@ -198,18 +205,14 @@ export default function SchedulingAppointment() {
           </CardContent>
         </Card>
 
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              All Appointments ({state.currentEvents.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <span className="text-md">
-              {state.currentEvents.map(renderSidebarEvent)}
-            </span>
-          </CardContent>
-        </Card>
+        <div className="border-2 text-sm p-2 rounded-md">
+          <span className="block text-base font-semibold">
+            All Appointments ({state.currentEvents.length})
+          </span>
+          <span className="text-md">
+            {state.currentEvents.map(renderSidebarEvent)}
+          </span>
+        </div>
       </div>
     )
   }
@@ -225,7 +228,7 @@ export default function SchedulingAppointment() {
 
   const renderSidebarEvent = (event: EventApi) => {
     return (
-      <div className="flex gap-2" key={event.id}>
+      <div className="flex gap-1" key={event.id}>
         <span>
           {formatDate(event.start!, {
             year: 'numeric',
@@ -246,14 +249,14 @@ export default function SchedulingAppointment() {
       />
       {addAppointment && (
         <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center ">
-          <div className=" w-[30rem] flex-col flex gap-2 my-5 border-2 p-4 bg-white rounded-md h-[10rem] mt-[12rem]">
+          <div className=" w-[30rem] flex-col flex gap-2 my-5 border-2 p-4 bg-white rounded-md h-fit mt-[12rem]">
             <div className="w-full">
-              <div className="w-full mb-[3rem]">
+              <div className="w-full h-fit mb-[3rem] ">
                 <Input
                   onChange={(e) => setHandleSearchPatient(e.target.value)}
                   placeholder="Search patient"
                 />
-                <Table>
+                <Table className="h-full">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>

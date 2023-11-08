@@ -47,6 +47,7 @@ export default function HealthCareForm() {
       .post('http://localhost/prenatal-tb/patient.php', {
         ...patientDemogprahy,
         patient_gender: patientGender,
+        patient_type: patientType,
       })
       .then((res) => {
         console.log(res.data)

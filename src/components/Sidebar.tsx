@@ -4,6 +4,7 @@ import { AiOutlineSchedule } from 'react-icons/ai'
 import { LuListChecks } from 'react-icons/lu'
 import { RxDashboard } from 'react-icons/rx'
 import { LiaNotesMedicalSolid } from 'react-icons/lia'
+import { AiOutlineQuestion } from 'react-icons/ai'
 export default function SideBar() {
   const [width, setWidth] = useState<number>(5)
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false)
@@ -39,6 +40,11 @@ export default function SideBar() {
           </Link>
           <Link className="p-2  mb-2 flex items-center gap-2" to="/records">
             <LuListChecks className="text-md h-[1.5rem] w-[1.5rem]" /> Records
+          </Link>
+
+          <Link className="p-2  mb-2 flex items-center gap-2" to="/questions">
+            <AiOutlineQuestion className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
+            Questions
           </Link>
         </div>
       </div>

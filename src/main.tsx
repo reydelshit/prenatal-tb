@@ -9,6 +9,7 @@ import Records from './components/Records.tsx'
 import Login from './Login.tsx'
 import PatientRecords from './components/PatientRecords.tsx'
 import ManagePatient from './components/ManagePatient.tsx'
+import Questionnare from './components/Questionnaire.tsx'
 
 const logoutUser = async () => {
   localStorage.removeItem('user')
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
       {
         path: 'records/patient/:id',
         element: <PatientRecords />,
+      },
+
+      {
+        path: 'questions',
+        element: <Questionnare />,
       },
     ],
   },
