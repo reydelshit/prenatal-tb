@@ -5,7 +5,11 @@ export default function Records() {
   return (
     <div>
       <Header title="Patient Records" description="View patient records" />
-      <RecordsTable />
+      <div className="w-full flex justify-center">
+        <div className="w-[80%]">
+          <RecordsTable />
+        </div>
+      </div>
     </div>
   )
 }

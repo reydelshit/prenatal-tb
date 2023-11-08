@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './Root.tsx'
-import HealthCareProvider from './components/Patient.tsx'
+import HealthCareProvider from './components/ManagePatient.tsx'
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
 import Login from './Login.tsx'
 import PatientRecords from './components/PatientRecords.tsx'
+import ManagePatient from './components/ManagePatient.tsx'
 
 const logoutUser = async () => {
   localStorage.removeItem('user')
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'patient',
-        element: <HealthCareProvider />,
+        element: <ManagePatient />,
       },
       {
         path: 'scheduling-appointment',

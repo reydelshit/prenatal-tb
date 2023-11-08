@@ -28,26 +28,27 @@ import { Button } from './ui/button'
 import { Label } from './ui/label'
 import axios from 'axios'
 import Header from './Header'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
-let eventGuid = 0
-let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
-
-// export const INITIAL_APPOINTMENTS: EventInput[] = [
-//   {
-//     id: createEventId(),
-//     title: ' All-day appointment',
-//     start: todayStr,
-//   },
-//   {
-//     id: createEventId(),
-//     title: ' Timed appointment',
-//     start: todayStr + 'T12:00:00',
-//   },
-// ]
-
-// export function createEventId() {
-//   return String(eventGuid++)
-// }
+type PatientType = {
+  patient_id: number
+  patient_name: string
+  patient_middlename: string
+  patient_lastname: string
+  patient_birthday: string
+  patient_age: number
+  patient_gender: string
+  patient_email: string
+  patient_phone: string
+}
 
 export default function SchedulingAppointment() {
   const [state, setState] = useState({
@@ -164,6 +165,25 @@ export default function SchedulingAppointment() {
     })
   }
 
+  const [patients, setPatients] = useState<PatientType[]>([])
+  const [handleSearchPatient, setHandleSearchPatient] = useState('')
+  const [selectedPatient, setSelectedPatient] = useState('')
+  const handleSelectedPatient = (selectedPatient: PatientType) => {
+    console.log(selectedPatient)
+
+    setTitle(selectedPatient.patient_name)
+  }
+
+  const getAllPatients = async () => {
+    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
+      setPatients(res.data)
+    })
+  }
+
+  useEffect(() => {
+    getAllPatients()
+  }, [])
+
   const renderSidebar = () => {
     return (
       <div className="w-[20rem] ">
@@ -225,14 +245,75 @@ export default function SchedulingAppointment() {
         description="Assign appointment to patients"
       />
       {addAppointment && (
-        <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center items-center">
-          <div className="w-[25rem] flex-col flex gap-2 my-5 border-2 items-center p-4 bg-white rounded-md h-[10rem] mt-[-20rem]">
+        <div className="w-full bg-white bg-opacity-90 z-20 absolute my-auto p-2 h-full flex justify-center ">
+          <div className=" w-[30rem] flex-col flex gap-2 my-5 border-2 p-4 bg-white rounded-md h-[10rem] mt-[12rem]">
             <div className="w-full">
-              <Label>Appointment title eg. Reydel - TB</Label>
+              <div className="w-full mb-[3rem]">
+                <Input
+                  onChange={(e) => setHandleSearchPatient(e.target.value)}
+                  placeholder="Search patient"
+                />
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Phone</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {patients &&
+                      patients
+                        .filter(
+                          (patient) =>
+                            patient.patient_name.includes(
+                              handleSearchPatient,
+                            ) ||
+                            patient.patient_lastname.includes(
+                              handleSearchPatient,
+                            ) ||
+                            patient.patient_middlename.includes(
+                              handleSearchPatient,
+                            ),
+                        )
+                        .map((patient, index) => {
+                          return (
+                            <TableRow
+                              key={index}
+                              onClick={() => handleSelectedPatient(patient)}
+                              className="cursor-pointer"
+                            >
+                              <TableCell>
+                                {patient.patient_name +
+                                  ' ' +
+                                  patient.patient_middlename +
+                                  ' ' +
+                                  patient.patient_lastname}
+                              </TableCell>
+                              <TableCell>{patient.patient_phone}</TableCell>
+                            </TableRow>
+                          )
+                        })
+                        .splice(0, 5)}
+                  </TableBody>
+                </Table>
+              </div>
+              <Label className="mb-2 block">
+                Appointment title eg. Reydel Ocon - (Patient type eg. TB ||
+                Pren)
+              </Label>
               <Input
+                value={title}
                 placeholder="Appointment title"
                 onChange={(e) => setTitle(e.target.value)}
               />
+            </div>
+
+            <div className="my-2">
+              <p className="text-xs">
+                <strong>Note:</strong> Upon adding appointment, the push
+                notification and sms message will automatically send to the
+                patient. SMS charges may apply.
+              </p>
             </div>
             <div className="flex gap-2 self-end">
               <Button

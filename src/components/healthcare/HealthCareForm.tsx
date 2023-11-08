@@ -170,7 +170,7 @@ export default function HealthCareForm() {
             <Input className="w-full" />
           </div>
 
-          <div className="mt-2 flex w-full items-end justify-end border-2">
+          <div className="mt-2 flex w-full items-end justify-end">
             <Button type="submit">Submit</Button>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function HealthCareForm() {
             <Input type="text" className="w-full" />
           </div>
 
-          <div className="mt-2 flex w-full items-end justify-end border-2">
+          <div className="mt-2 flex w-full items-end justify-end">
             <Button type="submit">Submit</Button>
           </div>
         </div>
