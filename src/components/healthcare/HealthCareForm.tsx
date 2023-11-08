@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '../ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -11,6 +11,15 @@ import {
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 
+type Questions = {
+  id: number
+  title: string
+  question_type: string
+}
+
+interface TuberculosisData {
+  [key: string]: string // Define the structure of the data (question ID to answer)
+}
 export default function HealthCareForm() {
   const [patientUsername, setPatientUsername] = useState<string>('')
   const [patientPassword, setPatientPassword] = useState<string>('')
@@ -26,6 +35,12 @@ export default function HealthCareForm() {
     patientPhone: '',
     patientEmail: '',
   })
+
+  const [patientQuestionAnswers, setPatientQuestionAnswers] = useState({})
+  const [tuberculosisQuestions, setTuberculosisQuestions] =
+    useState<TuberculosisData>({})
+
+  const [questions, setQuestions] = useState<Questions[]>([])
 
   const handlePatientTypeChange = (event: string) => {
     const selectedValue = event
@@ -43,22 +58,61 @@ export default function HealthCareForm() {
     e.preventDefault()
     console.log('submit')
 
+    const tuberculosisData = Object.keys(tuberculosisQuestions).map(
+      (questionId) => ({
+        question_id: questionId,
+        answer_text: tuberculosisQuestions[questionId],
+      }),
+    )
+
     axios
       .post('http://localhost/prenatal-tb/patient.php', {
         ...patientDemogprahy,
         patient_gender: patientGender,
         patient_type: patientType,
+
+        tuberculosisData,
       })
       .then((res) => {
         console.log(res.data)
       })
   }
 
+  const getAllQuestions = () => {
+    axios.get('http://localhost/prenatal-tb/question.php').then((res) => {
+      console.log(res.data)
+      setQuestions(res.data)
+    })
+  }
+
+  useEffect(() => {
+    getAllQuestions()
+  }, [])
+
   const handlePatientGenderChange = (event: string) => {
     const selectedValue = event
     setPatientGender(selectedValue)
     // console.log(selectedValue);
   }
+
+  // const handleQuestionEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target
+  //   console.log(name, value)
+  //   setPatientQuestionAnswers((values) => ({ ...values, [name]: value }))
+  // }
+
+  const handleAnswerChange = (questionId: number, answer: string) => {
+    console.log(questionId, answer)
+    setTuberculosisQuestions({
+      ...tuberculosisQuestions,
+      [questionId]: answer,
+    })
+
+    console.log(tuberculosisQuestions)
+
+    // console.log(tuberculosisQuestions)
+  }
+
   return (
     <form onSubmit={handleSubmitPatientDemo} className="p-2">
       <div className="flex flex-col gap-2">
@@ -150,56 +204,41 @@ export default function HealthCareForm() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="Tuberculosis">Tuberculosis Patient</SelectItem>
-            <SelectItem value="Pregnant">Pregnant Patient</SelectItem>
+            <SelectItem value="Prenatal">Pregnant Patient</SelectItem>
           </SelectContent>
         </Select>
       </div>
       {patientType === 'Tuberculosis' && (
         <div>
-          <div>
-            <Label>Current symptoms (cough, fever, weight loss, etc.)</Label>
-            <Input className="w-full" />
-          </div>
+          {questions
+            .filter((ques) => ques.question_type === 'Tuberculosis')
+            .map((ques, index) => (
+              <div key={index}>
+                <Label>{ques.title}</Label>
+                <Input
+                  onChange={(e) => handleAnswerChange(ques.id, e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            ))}
 
-          <div>
-            <Label>History of exposure to tuberculosis</Label>
-            <Input className="w-full" />
-          </div>
-
-          <div>
-            <Label>Previous TB treatments (if any)</Label>
-            <Input className="w-full" />
-          </div>
-
-          <div className="mt-2 flex w-full items-end justify-end">
+          <div className="w-full flex justify-end py-2">
             <Button type="submit">Submit</Button>
           </div>
         </div>
       )}
 
-      {patientType === 'Pregnant' && (
+      {patientType === 'Prenatal' && (
         <div>
-          <div>
-            <Label>Estimated date of conception</Label>
-            <Input type="text" className="w-full" />
-          </div>
-
-          <div>
-            <Label>Number of previous pregnancies</Label>
-            <Input type="text" className="w-full" />
-          </div>
-
-          <div>
-            <Label>Any complications during previous pregnancies</Label>
-            <Input type="text" className="w-full" />
-          </div>
-
-          <div>
-            <Label>Current symptoms or discomforts</Label>
-            <Input type="text" className="w-full" />
-          </div>
-
-          <div className="mt-2 flex w-full items-end justify-end">
+          {questions
+            .filter((ques) => ques.question_type === 'Prenatal')
+            .map((ques, index) => (
+              <div key={index}>
+                <Label>{ques.title}</Label>
+                <Input className="w-full" />
+              </div>
+            ))}
+          <div className="w-full flex justify-end py-2">
             <Button type="submit">Submit</Button>
           </div>
         </div>
