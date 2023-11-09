@@ -36,9 +36,11 @@ export default function HealthCareForm() {
     patientEmail: '',
   })
 
-  const [patientQuestionAnswers, setPatientQuestionAnswers] = useState({})
   const [tuberculosisQuestions, setTuberculosisQuestions] =
     useState<TuberculosisData>({})
+  const [prenatalQuestions, setPrenatalQuestions] = useState<TuberculosisData>(
+    {},
+  )
 
   const [questions, setQuestions] = useState<Questions[]>([])
 
@@ -65,17 +67,26 @@ export default function HealthCareForm() {
       }),
     )
 
+    const prenatalData = Object.keys(prenatalQuestions).map((questionId) => ({
+      question_id: questionId,
+      answer_text: prenatalQuestions[questionId],
+    }))
+
     axios
       .post('http://localhost/prenatal-tb/patient.php', {
         ...patientDemogprahy,
         patient_gender: patientGender,
         patient_type: patientType,
-
         tuberculosisData,
+        prenatalData,
       })
       .then((res) => {
         console.log(res.data)
       })
+
+    // clear input fields
+
+    window.location.reload()
   }
 
   const getAllQuestions = () => {
@@ -95,20 +106,23 @@ export default function HealthCareForm() {
     // console.log(selectedValue);
   }
 
-  // const handleQuestionEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target
-  //   console.log(name, value)
-  //   setPatientQuestionAnswers((values) => ({ ...values, [name]: value }))
-  // }
-
   const handleAnswerChange = (questionId: number, answer: string) => {
     console.log(questionId, answer)
-    setTuberculosisQuestions({
-      ...tuberculosisQuestions,
-      [questionId]: answer,
-    })
 
-    console.log(tuberculosisQuestions)
+    if (patientType === 'Tuberculosis') {
+      setTuberculosisQuestions({
+        ...tuberculosisQuestions,
+        [questionId]: answer,
+      })
+    } else {
+      setPrenatalQuestions({
+        ...prenatalQuestions,
+        [questionId]: answer,
+      })
+    }
+
+    // console.log(tuberculosisQuestions)
+    console.log(prenatalQuestions)
 
     // console.log(tuberculosisQuestions)
   }
@@ -119,6 +133,7 @@ export default function HealthCareForm() {
         <div className="w-full">
           <Label>First name</Label>
           <Input
+            type="text"
             onChange={handleInputChange}
             name="patient_name"
             className="w-full"
@@ -235,7 +250,10 @@ export default function HealthCareForm() {
             .map((ques, index) => (
               <div key={index}>
                 <Label>{ques.title}</Label>
-                <Input className="w-full" />
+                <Input
+                  onChange={(e) => handleAnswerChange(ques.id, e.target.value)}
+                  className="w-full"
+                />
               </div>
             ))}
           <div className="w-full flex justify-end py-2">
