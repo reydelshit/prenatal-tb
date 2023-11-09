@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Root from './Root.tsx'
-import HealthCareProvider from './components/ManagePatient.tsx'
+
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
 import Login from './Login.tsx'
@@ -11,12 +10,17 @@ import PatientRecords from './components/PatientRecords.tsx'
 import ManagePatient from './components/ManagePatient.tsx'
 import Questionnare from './components/Questionnaire.tsx'
 
+import HProvider from './components/provider/HProvider.tsx'
+import HProviderRoot from './components/root/HProviderRoot.tsx'
+import UserRoot from './components/root/PatientRoot.tsx'
+import PatientRoot from './components/root/PatientRoot.tsx'
+
 const logoutUser = async () => {
   localStorage.removeItem('user')
   // return navigate('/login')
 }
 
-const redirectIfUser = async () => {
+const redirectIfUser = () => {
   const user = localStorage.getItem('user')
   const userType = localStorage.getItem('type')
 
@@ -30,7 +34,11 @@ const redirectIfUser = async () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: (
+      <HProvider>
+        <HProviderRoot />
+      </HProvider>
+    ),
     errorElement: <div>Not found</div>,
     children: [
       {
@@ -64,6 +72,34 @@ const router = createBrowserRouter([
   {
     path: 'logout',
     action: logoutUser,
+  },
+
+  {
+    path: 'user',
+    element: <PatientRoot />,
+    children: [
+      {
+        path: 'patient',
+        element: <ManagePatient />,
+      },
+      {
+        path: 'scheduling-appointment',
+        element: <SchedulingAppointment />,
+      },
+      {
+        path: 'records',
+        element: <Records />,
+      },
+      {
+        path: 'records/patient/:id',
+        element: <PatientRecords />,
+      },
+
+      {
+        path: 'questions',
+        element: <Questionnare />,
+      },
+    ],
   },
 ])
 

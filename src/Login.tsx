@@ -26,7 +26,7 @@ export default function Login() {
           const type = res.data[0].user_type
 
           if (type === 'hprovider') {
-            window.location.href = '/add-patient'
+            window.location.href = '/'
           }
         }
       })
