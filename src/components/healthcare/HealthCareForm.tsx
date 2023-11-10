@@ -54,6 +54,14 @@ export default function HealthCareForm() {
     const { name, value } = e.target
     console.log(name, value)
     setPatientDemogprahy((values) => ({ ...values, [name]: value }))
+
+    if (name === 'patient_name') {
+      setPatientUsername(value + Math.floor(Math.random() * (999 - 100 + 1)))
+    }
+
+    if (name === 'patient_lastname') {
+      setPatientPassword(value + Math.floor(Math.random() * (999 - 100 + 1)))
+    }
   }
 
   const handleSubmitPatientDemo = (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,10 +87,21 @@ export default function HealthCareForm() {
         patient_type: patientType,
         tuberculosisData,
         prenatalData,
+
+        user_username: patientUsername,
+        user_password: patientPassword,
       })
       .then((res) => {
         console.log(res.data)
       })
+
+    // axios
+    //   .post('http://localhost/prenatal-tb/login.php', {
+
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data)
+    //   })
 
     // clear input fields
 
@@ -212,6 +231,24 @@ export default function HealthCareForm() {
         </div>
       </div>
 
+      <div className="py-2">
+        <Label className="font-bold">Patient Account</Label>
+        <Label className="block text-xs py-2">
+          Note: upon submission the patient account will be uploaded also in the
+          database
+        </Label>
+
+        <div>
+          <Label className="mr-2 font-bold">Username:</Label>
+          <span className="font-semibold text-sm">{patientUsername}</span>
+        </div>
+
+        <div>
+          <Label className="mr-2 font-bold">Password:</Label>
+          <span className="font-semibold text-sm">{patientPassword}</span>
+        </div>
+      </div>
+
       <div className="my-4">
         <Select onValueChange={handlePatientTypeChange}>
           <SelectTrigger className="w-[180px]">
@@ -223,6 +260,7 @@ export default function HealthCareForm() {
           </SelectContent>
         </Select>
       </div>
+
       {patientType === 'Tuberculosis' && (
         <div>
           {questions

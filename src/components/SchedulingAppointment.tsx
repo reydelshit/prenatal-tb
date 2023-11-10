@@ -86,7 +86,7 @@ export default function SchedulingAppointment() {
     setAddAppointment(true)
   }
 
-  const handleDateSelect = (selectInfo: DateSelectArg) => {
+  const handleDateSelect = (selectInfo: DateSelectArg, patient_id: number) => {
     // setAddAppointment(true)
 
     // let title = prompt('Please enter a new title for your appointment')
@@ -110,6 +110,7 @@ export default function SchedulingAppointment() {
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay,
+          patient_id,
         })
         .then((res) => {
           console.log(res.data)
@@ -168,6 +169,7 @@ export default function SchedulingAppointment() {
 
   const [patients, setPatients] = useState<PatientType[]>([])
   const [handleSearchPatient, setHandleSearchPatient] = useState('')
+  const [patientID, setPatientID] = useState(0)
 
   const handleSelectedPatient = (selectedPatient: PatientType) => {
     console.log(selectedPatient)
@@ -179,6 +181,8 @@ export default function SchedulingAppointment() {
         ' - ' +
         selectedPatient.patient_type,
     )
+
+    setPatientID(selectedPatient.patient_id)
   }
 
   const getAllPatients = async () => {
@@ -326,7 +330,7 @@ export default function SchedulingAppointment() {
                 Cancel
               </Button>
 
-              <Button onClick={() => handleDateSelect(selectInfo)}>
+              <Button onClick={() => handleDateSelect(selectInfo, patientID)}>
                 Add appointment
               </Button>
             </div>

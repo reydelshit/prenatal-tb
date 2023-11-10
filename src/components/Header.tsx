@@ -20,7 +20,7 @@ export default function Header({
     localStorage.removeItem('type')
     localStorage.removeItem('user')
 
-    window.location.reload()
+    window.location.href = '/login'
   }
   return (
     <div className="h-[8rem] px-5 py-5 mb-2 flex justify-between">

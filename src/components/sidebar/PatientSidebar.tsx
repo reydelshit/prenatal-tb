@@ -19,6 +19,8 @@ export default function PatientSidebar() {
     setIsMouseOver(false)
   }
 
+  const userID = localStorage.getItem('user')
+
   return (
     <div className="block min-w-[16rem] h-screen">
       <div className=" flex flex-col justify-between w-full h-full border-2 border-orange-500">
@@ -29,31 +31,10 @@ export default function PatientSidebar() {
 
           <Link
             className="p-2  mb-2 flex items-center gap-2"
-            to="/user/patient"
+            to={`/user/visit/${userID}`}
           >
             <LiaNotesMedicalSolid className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
             Manage Patient
-          </Link>
-          <Link
-            className="p-2  mb-2 flex items-center gap-2"
-            to="/user/scheduling-appointment"
-          >
-            <AiOutlineSchedule className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
-            Schedule Appointment
-          </Link>
-          <Link
-            className="p-2  mb-2 flex items-center gap-2"
-            to="/user/records"
-          >
-            <LuListChecks className="text-md h-[1.5rem] w-[1.5rem]" /> Records
-          </Link>
-
-          <Link
-            className="p-2  mb-2 flex items-center gap-2"
-            to="/user/questions"
-          >
-            <AiOutlineQuestion className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
-            Questions
           </Link>
         </div>
       </div>

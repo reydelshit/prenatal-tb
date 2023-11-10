@@ -14,6 +14,8 @@ import HProvider from './components/provider/HProvider.tsx'
 import HProviderRoot from './components/root/HProviderRoot.tsx'
 import UserRoot from './components/root/PatientRoot.tsx'
 import PatientRoot from './components/root/PatientRoot.tsx'
+import Visit from './UserPatient/Visit.tsx'
+import PatientLogVisit from './UserPatient/PatientLogVisit.tsx'
 
 const logoutUser = async () => {
   localStorage.removeItem('user')
@@ -25,7 +27,7 @@ const redirectIfUser = () => {
   const userType = localStorage.getItem('type')
 
   if (user && userType === 'hprovider') {
-    return (window.location.href = '/add-patient')
+    return (window.location.href = '/')
   } else {
     return <Login />
   }
@@ -79,25 +81,12 @@ const router = createBrowserRouter([
     element: <PatientRoot />,
     children: [
       {
-        path: 'patient',
-        element: <ManagePatient />,
+        path: 'visit',
+        element: <Visit />,
       },
       {
-        path: 'scheduling-appointment',
-        element: <SchedulingAppointment />,
-      },
-      {
-        path: 'records',
-        element: <Records />,
-      },
-      {
-        path: 'records/patient/:id',
-        element: <PatientRecords />,
-      },
-
-      {
-        path: 'questions',
-        element: <Questionnare />,
+        path: 'visit/:id',
+        element: <PatientLogVisit />,
       },
     ],
   },

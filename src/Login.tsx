@@ -6,7 +6,7 @@ import { useState } from 'react'
 import axios from 'axios'
 export default function Login() {
   const [loginDetails, setLoginDetails] = useState({
-    email: '',
+    username: '',
     password: '',
   })
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,10 +23,18 @@ export default function Login() {
           localStorage.setItem('user', res.data[0].user_id)
           localStorage.setItem('type', res.data[0].user_type)
 
+          if (res.data[0].user_type === 'patient') {
+            localStorage.setItem('patient_id', res.data[0].patient_id)
+          }
+
           const type = res.data[0].user_type
 
           if (type === 'hprovider') {
             window.location.href = '/'
+          }
+
+          if (type === 'patient') {
+            window.location.href = '/user'
           }
         }
       })
@@ -49,10 +57,9 @@ export default function Login() {
           className="flex flex-col justify-center items-center "
         >
           <Input
-            type="email"
-            placeholder="Email"
+            placeholder="Username"
             className="mb-2"
-            name="email"
+            name="username"
             onChange={handleChange}
           />
           <Input
