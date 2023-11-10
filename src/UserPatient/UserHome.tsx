@@ -1,0 +1,220 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import moment from 'moment'
+
+type PatientDataTypes = {
+  patient_id: number
+  created_at: string
+  patient_age: number
+  patient_birthday: string
+  patient_email: string
+  patient_gender: string
+  patient_name: string
+  patient_lastname: string
+  patient_middlename: string
+  patient_phone: string
+  patient_type: string
+}
+
+type NextAppointment = {
+  allDay: string
+  appointment_id: number
+  appointment_title: string
+  end: string
+  start: string
+}
+
+type AppointmentType = {
+  allDay: string
+  id: 23
+  start: string
+  title: string
+  end: string
+}
+
+export default function User() {
+  const [patientData, setPatientData] = useState<PatientDataTypes[]>([])
+  const [nextAppointment, setNextAppointment] = useState<NextAppointment[]>([])
+  const [appointment, setAppointment] = useState<AppointmentType[]>([])
+
+  const patient_id = localStorage.getItem('patient_id')
+  const user_id = localStorage.getItem('user_id')
+
+  const getPatientData = () => {
+    axios
+      .get('http://localhost/prenatal-tb/patient.php', {
+        params: {
+          patient_id: patient_id,
+          // user_id: user_id,
+        },
+      })
+      .then((res) => {
+        setPatientData(res.data)
+        // console.log(res.data)
+      })
+  }
+
+  const getNextAppointment = () => {
+    axios
+      .get('http://localhost/prenatal-tb/appointment.php', {
+        params: {
+          patient_id: patient_id,
+          next_appointment: 'yes',
+          // user_id: user_id,
+        },
+      })
+      .then((res) => {
+        console.log(res.data, 'next')
+        setNextAppointment(res.data)
+      })
+  }
+
+  const getAppointment = () => {
+    axios
+      .get('http://localhost/prenatal-tb/appointment.php', {
+        params: {
+          patient_id: patient_id,
+          all_appointments: 'yes',
+          // user_id: user_id,
+        },
+      })
+      .then((res) => {
+        console.log(res.data, 'appointment')
+        setAppointment(res.data)
+      })
+  }
+
+  useEffect(() => {
+    getPatientData()
+    getNextAppointment()
+    getAppointment()
+  }, [])
+
+  return (
+    <div className="w-full">
+      <div className="w-full px-2">
+        <div className="flex justify-between items-center h-[15rem]">
+          {patientData.map((patient, index) => (
+            <div className="flex flex-col p-4" key={index}>
+              <span className="flex gap-2 text-3xl">
+                Hello,
+                <h1 className="font-bold">
+                  {' '}
+                  {patient.patient_name +
+                    ' ' +
+                    patient.patient_middlename +
+                    ' ' +
+                    patient.patient_lastname}
+                </h1>
+                👋
+              </span>
+
+              <p>
+                See your number of visits and get notified when your appointment
+                is set
+              </p>
+            </div>
+          ))}
+
+          <div className="p-2">
+            <h1 className="text-1xl font-bold">Next Appointment</h1>
+            {nextAppointment.map((appointment, index) => (
+              <span key={index}>
+                {moment(appointment.start).format('LLLL')}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-2 p-2">
+        <Card className="text-start bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Number of visit
+            </CardTitle>
+            emji
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">10</div>
+            <p className="text-xs text-muted-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Provident, accusantium?
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="text-start bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">yes</CardTitle>d
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">10</div>
+            <p className="text-xs text-muted-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Provident, accusantium?
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="text-start bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">yes</CardTitle>d
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">10</div>
+            <p className="text-xs text-muted-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Provident, accusantium?
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="w-full justify-center flex mt-[2rem]">
+        <div className="w-[80%]">
+          <h1 className="py-2 font-bold">Appointments</h1>
+
+          <Table className="w-full border-2">
+            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>No.</TableHead>
+                <TableHead>Start</TableHead>
+                <TableHead>End</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {appointment.map((appointment, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{appointment.start}</TableCell>
+                  <TableCell>{appointment.end}</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </div>
+  )
+}

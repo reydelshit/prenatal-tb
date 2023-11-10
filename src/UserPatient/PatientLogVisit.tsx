@@ -22,11 +22,8 @@ export default function PatientLogVisit() {
 
   const [seconds, setSeconds] = useState(5)
 
-  useEffect(() => {
-    getAppointments()
-  }, [])
-
   const getAppointments = () => {
+    console.log(id)
     axios
       .get('http://localhost/prenatal-tb/appointment.php', {
         params: {
@@ -34,7 +31,7 @@ export default function PatientLogVisit() {
         },
       })
       .then((res) => {
-        console.log(res.data.length)
+        console.log(res.data, 'ndjas')
         setPatientAppointment(res.data)
       })
   }
@@ -54,6 +51,7 @@ export default function PatientLogVisit() {
     axios
       .post('http://localhost/prenatal-tb/visit.php', {
         patient_id: id,
+        // appointment_id: patientAppointment[0].appointment_id,
       })
       .then((res) => {
         console.log(res.data.status)
@@ -64,14 +62,18 @@ export default function PatientLogVisit() {
       })
   }
 
+  // useEffect(() => {
+  //   if (seconds === 0) {
+  //     window.location.href = '/user'
+  //   }
+  // }, [seconds])
+
   useEffect(() => {
-    if (seconds === 0) {
-      window.location.href = '/user'
-    }
-  }, [seconds])
+    getAppointments()
+  }, [])
 
   return (
-    <div>
+    <div className="w-[60rem] flex justify-center items-center">
       {patientAppointment.length > 0 ? (
         <div>
           <h1>PatientLogVisit {id}</h1>
