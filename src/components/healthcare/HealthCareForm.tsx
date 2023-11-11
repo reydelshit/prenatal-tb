@@ -156,6 +156,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_name"
             className="w-full"
+            required
           />
         </div>
 
@@ -165,6 +166,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_middlename"
             className="w-full"
+            required
           />
         </div>
 
@@ -174,6 +176,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_lastname"
             className="w-full"
+            required
           />
         </div>
       </div>
@@ -184,6 +187,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_age"
             className="w-full"
+            required
           />
         </div>
 
@@ -194,6 +198,7 @@ export default function HealthCareForm() {
             name="patient_birthday"
             type="date"
             className="w-full"
+            required
           />
         </div>
 
@@ -218,6 +223,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_phone"
             className="w-full"
+            required
           />
         </div>
 
@@ -227,6 +233,7 @@ export default function HealthCareForm() {
             onChange={handleInputChange}
             name="patient_email"
             className="w-full"
+            required
           />
         </div>
       </div>
@@ -234,8 +241,9 @@ export default function HealthCareForm() {
       <div className="py-2">
         <Label className="font-bold">Patient Account</Label>
         <Label className="block text-xs py-2">
-          Note: upon submission the patient account will be uploaded also in the
-          database
+          Note: Enter the demographic information of the patient to set the
+          username and password. Upon submission the patient account will also
+          be uploaded in the database.
         </Label>
 
         <div>
@@ -271,6 +279,7 @@ export default function HealthCareForm() {
                 <Input
                   onChange={(e) => handleAnswerChange(ques.id, e.target.value)}
                   className="w-full"
+                  required
                 />
               </div>
             ))}

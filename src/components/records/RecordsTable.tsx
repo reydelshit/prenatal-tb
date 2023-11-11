@@ -29,6 +29,7 @@ type PatientType = {
   patient_gender: string
   patient_email: string
   patient_phone: string
+  patient_type: string
 }
 export default function RecordsTable() {
   const [patients, setPatients] = useState<PatientType[]>([])
@@ -49,16 +50,25 @@ export default function RecordsTable() {
 
   const [handleSearchPatient, setHandleSearchPatient] = useState('')
 
+  const [patientType, setPatientType] = useState<string>('')
+  const handleChangePatientType = (event: string) => {
+    const selectedValue = event
+    setPatientType(selectedValue)
+    console.log(selectedValue)
+  }
   return (
     <div className="w-full flex flex-col">
       <div className="flex justify-between my-2">
-        <Select>
+        <Select onValueChange={handleChangePatientType}>
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="prenatal">Prenatal Patients</SelectItem>
-            <SelectItem value="tb">TB(Tuberculosis) Patients</SelectItem>
+            <SelectItem value="All">All</SelectItem>
+            <SelectItem value="Prenatal">Prenatal Patients</SelectItem>
+            <SelectItem value="Tuberculosis">
+              TB(Tuberculosis) Patients
+            </SelectItem>
           </SelectContent>
         </Select>
         <div className="w-[20%]">
@@ -88,9 +98,17 @@ export default function RecordsTable() {
             patients
               .filter(
                 (patient) =>
-                  patient.patient_name.includes(handleSearchPatient) ||
-                  patient.patient_lastname.includes(handleSearchPatient) ||
-                  patient.patient_middlename.includes(handleSearchPatient),
+                  (patient.patient_type.includes(patientType) &&
+                    (patient.patient_name
+                      .toLowerCase()
+                      .includes(handleSearchPatient.toLowerCase()) ||
+                      patient.patient_lastname
+                        .toLowerCase()
+                        .includes(handleSearchPatient.toLowerCase()) ||
+                      patient.patient_middlename
+                        .toLowerCase()
+                        .includes(handleSearchPatient.toLowerCase()))) ||
+                  patientType === 'All',
               )
               .map((patient, index) => {
                 return (

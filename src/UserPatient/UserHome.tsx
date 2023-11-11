@@ -155,7 +155,7 @@ export default function User() {
         </div>
       </div>
 
-      <div className="flex gap-2 p-2">
+      {/* <div className="flex gap-2 p-2">
         <Card className="text-start bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -197,9 +197,9 @@ export default function User() {
             </p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
       <div className="w-full justify-center flex mt-[2rem]">
-        <div className="w-[80%]">
+        <div className="w-[100%]">
           <div className="w-full flex justify-between">
             <h1 className="py-2 font-bold">Appointments</h1>
 

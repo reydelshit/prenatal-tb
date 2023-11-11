@@ -1,10 +1,10 @@
 import axios from 'axios'
 import Header from './Header'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Label } from './ui/label'
 import moment from 'moment'
-
+import { Button } from './ui/button'
 type PatientType = {
   patient_id: number
   patient_name: string
@@ -25,6 +25,7 @@ type PatientInfoType = {
 
 export default function ViewPatient() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [patient, setPatient] = useState<PatientType[]>([])
   const [patientInfo, setPatientInfo] = useState<PatientInfoType[]>([])
@@ -67,7 +68,13 @@ export default function ViewPatient() {
         description="View number of visits, diagnosis, and treatment"
       />
 
-      <div className="w-full flex justify-center flex-col items-center ">
+      <div className="w-full flex justify-center flex-col items-start">
+        <div className="flex justify-between w-full px-[10.5rem] ">
+          <h1 className="font-bold text-xl">Patient Information</h1>
+          <Button onClick={() => navigate('/medication')} className="self-end ">
+            Set Medication
+          </Button>
+        </div>
         {patient.length > 0 &&
           patient.map((pat, index) => (
             <div
@@ -125,6 +132,11 @@ export default function ViewPatient() {
           ))}
 
         <div className="w-full flex justify-center p-2 flex-col items-center">
+          <div className="w-full px-[10.5rem] mt-[2rem]">
+            <h1 className="self-start font-bold text-xl">
+              Additional Information
+            </h1>
+          </div>
           {patientInfo.map((info, index) => (
             <div key={index} className="flex gap-2 w-[80%] p-2">
               <span className="block w-full rounded-md p-2">
