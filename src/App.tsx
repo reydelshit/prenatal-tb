@@ -5,23 +5,46 @@ import moment from 'moment'
 import axios from 'axios'
 
 import { Button } from './components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { AiOutlineNumber } from 'react-icons/ai'
 import CardCompo from './components/dashboard/Card'
+import { GoNumber } from 'react-icons/go'
+
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from '@/components/ui/command'
+import { useNavigate } from 'react-router-dom'
 
 interface DataItem {
   name: string
   total: number
 }
 
+type PatientType = {
+  patient_id: number
+  patient_name: string
+  patient_middlename: string
+  patient_lastname: string
+  patient_birthday: string
+  patient_age: number
+  patient_gender: string
+  patient_email: string
+  patient_phone: string
+  patient_type: string
+}
+
 export default function App() {
   const [monthlyVisits, setMonthlyVisits] = useState<DataItem[]>([])
+  const [totalVisits, setTotalVisits] = useState([])
+  const [patients, setPatients] = useState<PatientType[]>([])
+  const navigate = useNavigate()
 
   const getMonthlyVisits = async () => {
     axios
@@ -36,8 +59,23 @@ export default function App() {
       })
   }
 
+  const getAllVisits = async () => {
+    axios.get('http://localhost/prenatal-tb/visit.php').then((res) => {
+      console.log(res.data)
+      setTotalVisits(res.data)
+    })
+  }
+
+  const getAllPatients = async () => {
+    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
+      setPatients(res.data)
+    })
+  }
+
   useEffect(() => {
     getMonthlyVisits()
+    getAllPatients()
+    getAllVisits()
   }, [])
 
   return (
@@ -52,33 +90,37 @@ export default function App() {
           <CardCompo
             title="TOTAL NUMBER OF PATIENTS"
             description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
-            icon="EMJI"
-            value="10"
+            icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
+            value={patients.length.toString()}
           />
 
           <CardCompo
             title=" TUBERCULOSIS PATIENTS"
             description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
-            icon="EMJI"
-            value="10"
+            icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
+            value={patients
+              .filter((patient) => patient.patient_type === 'Tuberculosis')
+              .length.toString()}
           />
 
           <CardCompo
-            title="  PRENATAL PATIENTS"
+            title="PRENATAL PATIENTS"
             description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
-            icon="EMJI"
-            value="10"
+            icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
+            value={patients
+              .filter((patient) => patient.patient_type === 'Prenatal')
+              .length.toString()}
           />
 
           <CardCompo
             title="TOTAL NUMBER OF VISITS"
             description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
-            icon="EMJI"
-            value="10"
+            icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
+            value={totalVisits.length.toString()}
           />
         </div>
 
-        <div className="w-full flex gap-4 border-2 justify-between">
+        <div className="w-full flex gap-4 justify-between">
           <div className="md:w-[70%] md:p-5 bg-white rounded-lg border-2">
             <h1 className="mb-5 font-bold uppercase">Monthly Visits</h1>
             <ResponsiveContainer width="100%" height={450}>
@@ -102,12 +144,85 @@ export default function App() {
             </ResponsiveContainer>
           </div>
 
-          <div className="w-[20rem] border-2">
-            <h1 className="font-bold my-2">Quick Actions</h1>
+          <div className="w-[25rem] block">
+            <Command className="border-2 h-fit">
+              <CommandInput placeholder="Type a command or search..." />
+              <CommandList className="h-full border-2">
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup heading="Suggestions">
+                  <CommandItem>
+                    <span
+                      onClick={() => navigate('/patient')}
+                      className="cursor-pointer"
+                    >
+                      Manage Patient
+                    </span>
+                  </CommandItem>
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/records')}
+                      className="cursor-pointer"
+                    >
+                      View Patient Records
+                    </span>
+                  </CommandItem>
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/scheduling-appointment')}
+                      className="cursor-pointer"
+                    >
+                      Set Appointment
+                    </span>
+                  </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup heading="Pages">
+                  <CommandItem>
+                    <span
+                      onClick={() => navigate('/')}
+                      className="cursor-pointer"
+                    >
+                      Dashboard
+                    </span>
+                  </CommandItem>
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/scheduling-appointment')}
+                      className="cursor-pointer"
+                    >
+                      Schedule Appointment
+                    </span>
+                  </CommandItem>
 
-            <div className="w-full flex flex-col">
-              <Button className="w-full mb-2">Add patient</Button>
-            </div>
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/medication')}
+                      className="cursor-pointer"
+                    >
+                      Medication
+                    </span>
+                  </CommandItem>
+
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/records')}
+                      className="cursor-pointer"
+                    >
+                      Records
+                    </span>
+                  </CommandItem>
+
+                  <CommandItem className="cursor-pointer">
+                    <span
+                      onClick={() => navigate('/questions')}
+                      className="cursor-pointer"
+                    >
+                      Questions
+                    </span>
+                  </CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
           </div>
         </div>
       </div>
