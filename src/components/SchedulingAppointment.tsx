@@ -37,6 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import moment from 'moment'
 
 type PatientType = {
   patient_id: number
@@ -114,16 +115,27 @@ export default function SchedulingAppointment() {
         })
         .then((res) => {
           console.log(res.data)
+
+          if (res.data.status === 'success') {
+            handleNotification(patient_id, selectInfo.startStr)
+          }
         })
     }
   }
 
-  // const handleAppointmentsDatabaase = (selectInfo: DateSelectArg) => {
-  //   console.log(selectInfo, 'handle')
-  //   if (title) {
-
-  //   }
-  // }
+  const handleNotification = (patient_id: number, startDate: string) => {
+    axios
+      .post('http://localhost/prenatal-tb/notification.php', {
+        receiver_id: patient_id,
+        sender_id: localStorage.getItem('user'),
+        notification_message: `You have a new appointment on ${moment(
+          startDate,
+        ).format('lll')}`,
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     console.log(clickInfo.event)

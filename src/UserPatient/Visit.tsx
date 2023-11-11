@@ -1,17 +1,52 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+type PatientAppointmentType = {
+  allDay: string
+  appointment_id: string
+  appointment_title: string
+  end: string
+  patient_id: number
+  start: Date
+}
+
 export default function Visit() {
   const patient_id = localStorage.getItem('patient_id')
 
   console.log('patient_id:', patient_id)
   console.log('test')
 
-  if (patient_id) {
-    const newUrl = 'http://localhost:5173/user/visit/' + patient_id
-    console.log('Redirecting to:', newUrl)
-    window.location.href = newUrl
-  } else {
-    console.error('User ID not found in localStorage')
-    window.location.href = '/login'
+  const [patientAppointment, setPatientAppointment] = useState<
+    PatientAppointmentType[]
+  >([])
+
+  const getAppointment = () => {
+    axios
+      .get('http://localhost/prenatal-tb/appointment.php', {
+        params: {
+          patient_id: patient_id,
+        },
+      })
+      .then((res) => {
+        console.log(res.data, 'ndjas')
+        setPatientAppointment(res.data)
+
+        if (patient_id) {
+          const newUrl =
+            'http://localhost:5173/user/visit/' + res.data[0].appointment_id
+
+          console.log('Redirecting to:', newUrl)
+          window.location.href = newUrl
+        } else {
+          console.error('User ID not found in localStorage')
+          window.location.href = '/login'
+        }
+      })
   }
+
+  useEffect(() => {
+    getAppointment()
+  }, [])
 
   return (
     <div className="w-[50rem] text-center">

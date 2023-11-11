@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { log } from 'console'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -11,6 +12,7 @@ type PatientAppointmentType = {
   end: string
   patient_id: number
   start: Date
+  appointment_status: string
 }
 
 export default function PatientLogVisit() {
@@ -26,9 +28,10 @@ export default function PatientLogVisit() {
   const getAppointments = () => {
     console.log(id)
     axios
-      .get('http://localhost/prenatal-tb/appointment.php', {
+      .get('http://localhost/prenatal-tb/patientlog.php', {
         params: {
-          patient_id: id,
+          appointment_id: id,
+          // appointment_decider: 'ok',
         },
       })
       .then((res) => {
@@ -51,7 +54,7 @@ export default function PatientLogVisit() {
   const handleLogVisit = () => {
     axios
       .post('http://localhost/prenatal-tb/visit.php', {
-        patient_id: id,
+        patient_id: localStorage.getItem('patient_id'),
         appointment_id: id,
         // appointment_id: patientAppointment[0].appointment_id,
       })
@@ -78,14 +81,29 @@ export default function PatientLogVisit() {
   return (
     <div className="w-[60rem] flex justify-center items-center">
       {patientAppointment.length > 0 ? (
-        <div>
-          <h1>PatientLogVisit {id}</h1>
-          {showSeconds && <div>redirecting back to homepage {seconds}</div>}
+        patientAppointment.map((appointment, index) => (
+          <div key={index}>
+            {moment(appointment.start).format('LL')}
+            {/* <h1>PatientLogVisit {id}</h1> */}
+            {showSeconds && <div>redirecting back to homepage {seconds}</div>}
 
-          <Button onClick={handleLogVisit}>Log visit</Button>
-        </div>
+            <h1>
+              {appointment.appointment_status === 'Done'
+                ? 'You are already logged your visit for this schedule'
+                : ''}
+            </h1>
+            <Button
+              disabled={
+                appointment.appointment_status === 'Done' ? true : false
+              }
+              onClick={handleLogVisit}
+            >
+              Log visit
+            </Button>
+          </div>
+        ))
       ) : (
-        <h1>No Appointment</h1>
+        <h1>Not yet scheduled</h1>
       )}
     </div>
   )

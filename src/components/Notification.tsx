@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 type Notification = {
   created_at: string
-  message: string
+  notification_message: string
   receiver_id: number
   sender_id: number
 }
@@ -12,9 +12,12 @@ export default function Notification() {
   const getNotification = async () => {
     try {
       const response = await axios.get(
-        'http://localhost/ordering/notification.php',
+        'http://localhost/prenatal-tb/notification.php',
         {
-          params: { receiver_id: localStorage.getItem('ordering-token') },
+          params: {
+            receiver_id: localStorage.getItem('patient_id'),
+            user_id: localStorage.getItem('user'),
+          },
         },
       )
       console.log(response.data, 'notif')
@@ -35,22 +38,26 @@ export default function Notification() {
   }, [])
 
   return (
-    <div>
+    <div className="h-[20rem] pb-6 ">
       <h1>You have {notification.length} notifications</h1>
-      {notification.length > 0 ? (
-        notification.map((noti, index) => {
-          return (
-            <div
-              className="border-2 p-2 mt-[1rem] rounded-sm bg-gray-200"
-              key={index}
-            >
-              <p>{noti.message}</p>
-            </div>
-          )
-        })
-      ) : (
-        <p>No notifications</p>
-      )}
+      <div className="h-full overflow-y-scroll ">
+        {notification.length > 0 ? (
+          notification
+            .map((noti, index) => {
+              return (
+                <div
+                  className="border-2 p-2 mt-[1rem] rounded-sm bg-gray-200"
+                  key={index}
+                >
+                  <p>{noti.notification_message}</p>
+                </div>
+              )
+            })
+            .slice(0, 5)
+        ) : (
+          <p>No notifications</p>
+        )}
+      </div>
     </div>
   )
 }
