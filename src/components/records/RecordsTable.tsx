@@ -31,6 +31,7 @@ type PatientType = {
   patient_phone: string
   patient_type: string
 }
+
 export default function RecordsTable() {
   const [patients, setPatients] = useState<PatientType[]>([])
   const getAllPatients = async () => {
@@ -71,7 +72,7 @@ export default function RecordsTable() {
             </SelectItem>
           </SelectContent>
         </Select>
-        <div className="w-[20%]">
+        <div className="w-[40%]">
           <Input
             onChange={(e) => setHandleSearchPatient(e.target.value)}
             placeholder="search patient.."

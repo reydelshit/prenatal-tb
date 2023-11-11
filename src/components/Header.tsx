@@ -22,31 +22,23 @@ export default function Header({
 
     window.location.href = '/login'
   }
+
+  const userType = localStorage.getItem('type')
   return (
     <div className="h-[8rem] px-5 py-5 mb-2 ">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center mb-[1.5rem]">
         <div className="flex flex-col justify-center w-full">
           <h1 className="text-3xl font-bold">{title}</h1>
-          <p className="mb-[1.5rem]">{description}</p>
+          <p>{description}</p>
         </div>
-        <Sheet>
-          <SheetTrigger>Open</SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-              <SheetDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </SheetDescription>
-            </SheetHeader>
-
-            <div>
-              <Button onClick={handleLogout} className="btn btn-primary">
-                Logout
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+        <div className="flex w-[25%] gap-2 justify-between p-2 items-center">
+          <h1 className="font-bold w-fit  text-center my-2 p-2 rounded-sm">
+            {userType === 'hprovider' ? 'Health Care Provider' : 'Patient'}
+          </h1>
+          <Button onClick={handleLogout} className="btn btn-primary">
+            Logout
+          </Button>
+        </div>
       </div>
 
       <Separator />
