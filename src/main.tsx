@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import SchedulingAppointment from './components/SchedulingAppointment.tsx'
 import Records from './components/Records.tsx'
 import Login from './Login.tsx'
-import PatientRecords from './components/PatientRecords.tsx'
+import PatientRecords from './components/ViewPatient.tsx'
 import ManagePatient from './components/ManagePatient.tsx'
 import Questionnare from './components/Questionnaire.tsx'
 
@@ -17,6 +17,7 @@ import PatientRoot from './components/root/PatientRoot.tsx'
 import Visit from './UserPatient/Visit.tsx'
 import PatientLogVisit from './UserPatient/PatientLogVisit.tsx'
 import Medication from './components/Medication.tsx'
+import ViewPatient from './components/ViewPatient.tsx'
 
 const logoutUser = async () => {
   localStorage.removeItem('user')
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'records/patient/:id',
-        element: <PatientRecords />,
+        element: <ViewPatient />,
       },
 
       {
