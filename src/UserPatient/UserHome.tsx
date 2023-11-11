@@ -1,13 +1,4 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-
-import {
   Table,
   TableBody,
   TableCaption,
@@ -53,10 +44,24 @@ type AppointmentType = {
   appointment_status: string
 }
 
+type PatientMedication = {
+  medication_id: number
+  patient_name: string
+  medication_name: string
+  dosage: string
+  frequency: string
+  start: string
+  end: string
+  created_at: string
+  description: string
+  patient_id: number
+}
+
 export default function User() {
   const [patientData, setPatientData] = useState<PatientDataTypes[]>([])
   const [nextAppointment, setNextAppointment] = useState<NextAppointment[]>([])
   const [appointment, setAppointment] = useState<AppointmentType[]>([])
+  const [medication, setMedication] = useState<PatientMedication[]>([])
 
   const patient_id = localStorage.getItem('patient_id')
   const user_id = localStorage.getItem('user_id')
@@ -73,6 +78,18 @@ export default function User() {
       .then((res) => {
         setPatientData(res.data)
         // console.log(res.data)
+      })
+  }
+
+  const getAllPatientsMedication = async () => {
+    axios
+      .get('http://localhost/prenatal-tb/medication.php', {
+        params: {
+          patient_id: patient_id,
+        },
+      })
+      .then((res) => {
+        setMedication(res.data)
       })
   }
 
@@ -110,6 +127,7 @@ export default function User() {
     getPatientData()
     getNextAppointment()
     getAppointment()
+    getAllPatientsMedication()
   }, [])
 
   const handleNavigate = (id: number) => {
@@ -167,7 +185,6 @@ export default function User() {
           </div>
 
           <Table className="w-full border-2">
-            <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>No.</TableHead>
@@ -191,6 +208,48 @@ export default function User() {
                   <TableCell>{appointment.appointment_status}</TableCell>
                 </TableRow>
               ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      <div className="w-full mt-[2rem] flex flex-col items-center">
+        <div className="w-full mt-[2rem] mb-2">
+          <h1 className="self-start font-bold">Patient Medication List</h1>
+        </div>
+        <div className="w-[100%]">
+          <Table className="w-full">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Medication</TableHead>
+                <TableHead>Dosage</TableHead>
+                <TableHead>Frequency</TableHead>
+                <TableHead>Start</TableHead>
+                <TableHead>End</TableHead>
+                <TableHead>Description</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {medication.length > 0 ? (
+                medication.map((med, index) => {
+                  return (
+                    <TableRow key={index} className="cursor-pointer">
+                      <TableCell>{med.patient_name}</TableCell>
+                      <TableCell>{med.medication_name}</TableCell>
+                      <TableCell>{med.dosage}</TableCell>
+                      <TableCell>{med.frequency}</TableCell>
+                      <TableCell>{moment(med.start).format('LL')}</TableCell>
+                      <TableCell>{moment(med.end).format('LL')}</TableCell>
+                      <TableCell>{med.description}</TableCell>
+                    </TableRow>
+                  )
+                })
+              ) : (
+                <TableRow className="font-bold h-[4rem] text-xl text-center w-full">
+                  There is no current medication
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
