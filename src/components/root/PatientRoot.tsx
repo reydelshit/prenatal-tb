@@ -11,8 +11,7 @@ import {
 import { IoMdNotificationsOutline } from 'react-icons/io'
 
 import Notification from '../Notification'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+
 import User from '@/UserPatient/UserHome'
 
 export default function HProviderRoot() {

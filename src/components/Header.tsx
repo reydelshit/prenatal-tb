@@ -23,30 +23,33 @@ export default function Header({
     window.location.href = '/login'
   }
   return (
-    <div className="h-[8rem] px-5 py-5 mb-2 flex justify-between">
-      <div className="flex flex-col justify-center">
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <p className="mb-[1.5rem]">{description}</p>
-        <Separator />
-      </div>
-      <Sheet>
-        <SheetTrigger>Open</SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-            <SheetDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </SheetDescription>
-          </SheetHeader>
+    <div className="h-[8rem] px-5 py-5 mb-2 ">
+      <div className="flex justify-between">
+        <div className="flex flex-col justify-center w-full">
+          <h1 className="text-3xl font-bold">{title}</h1>
+          <p className="mb-[1.5rem]">{description}</p>
+        </div>
+        <Sheet>
+          <SheetTrigger>Open</SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Are you sure absolutely sure?</SheetTitle>
+              <SheetDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </SheetDescription>
+            </SheetHeader>
 
-          <div>
-            <Button onClick={handleLogout} className="btn btn-primary">
-              Logout
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
+            <div>
+              <Button onClick={handleLogout} className="btn btn-primary">
+                Logout
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      <Separator />
     </div>
   )
 }

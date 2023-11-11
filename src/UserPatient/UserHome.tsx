@@ -19,6 +19,8 @@ import {
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import { Label } from '@/components/ui/label'
 
 type PatientDataTypes = {
   patient_id: number
@@ -48,6 +50,7 @@ type AppointmentType = {
   start: string
   title: string
   end: string
+  appointment_status: string
 }
 
 export default function User() {
@@ -57,6 +60,7 @@ export default function User() {
 
   const patient_id = localStorage.getItem('patient_id')
   const user_id = localStorage.getItem('user_id')
+  const navigate = useNavigate()
 
   const getPatientData = () => {
     axios
@@ -107,6 +111,12 @@ export default function User() {
     getNextAppointment()
     getAppointment()
   }, [])
+
+  const handleNavigate = (id: number) => {
+    console.log(id)
+
+    navigate(`/user/visit/${id}`)
+  }
 
   return (
     <div className="w-full">
@@ -190,7 +200,14 @@ export default function User() {
       </div>
       <div className="w-full justify-center flex mt-[2rem]">
         <div className="w-[80%]">
-          <h1 className="py-2 font-bold">Appointments</h1>
+          <div className="w-full flex justify-between">
+            <h1 className="py-2 font-bold">Appointments</h1>
+
+            <div className="flex flex-col items-end">
+              <Label className="bg-yellow-500 text-white p-2">Today</Label>
+              <h1 className="py-2 font-bold">{moment().format('LLLL')}</h1>
+            </div>
+          </div>
 
           <Table className="w-full border-2">
             <TableCaption>A list of your recent invoices.</TableCaption>
@@ -204,11 +221,17 @@ export default function User() {
             </TableHeader>
             <TableBody>
               {appointment.map((appointment, index) => (
-                <TableRow key={index}>
+                <TableRow
+                  className="cursor-pointer"
+                  onClick={() => handleNavigate(appointment.id)}
+                  key={index}
+                >
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{appointment.start}</TableCell>
-                  <TableCell>{appointment.end}</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    {moment(appointment.start).format('LL')}
+                  </TableCell>
+                  <TableCell> {moment(appointment.end).format('LL')}</TableCell>
+                  <TableCell>{appointment.appointment_status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

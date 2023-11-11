@@ -21,6 +21,7 @@ export default function PatientLogVisit() {
   >([])
 
   const [seconds, setSeconds] = useState(5)
+  const [showSeconds, setShowSeconds] = useState(false)
 
   const getAppointments = () => {
     console.log(id)
@@ -51,22 +52,24 @@ export default function PatientLogVisit() {
     axios
       .post('http://localhost/prenatal-tb/visit.php', {
         patient_id: id,
+        appointment_id: id,
         // appointment_id: patientAppointment[0].appointment_id,
       })
       .then((res) => {
         console.log(res.data.status)
 
         if (res.data.status === 'success') {
+          setShowSeconds(true)
           startCountdown()
         }
       })
   }
 
-  // useEffect(() => {
-  //   if (seconds === 0) {
-  //     window.location.href = '/user'
-  //   }
-  // }, [seconds])
+  useEffect(() => {
+    if (seconds === 0) {
+      window.location.href = '/user'
+    }
+  }, [seconds])
 
   useEffect(() => {
     getAppointments()
@@ -77,8 +80,7 @@ export default function PatientLogVisit() {
       {patientAppointment.length > 0 ? (
         <div>
           <h1>PatientLogVisit {id}</h1>
-
-          <div>redirecting in {seconds}</div>
+          {showSeconds && <div>redirecting back to homepage {seconds}</div>}
 
           <Button onClick={handleLogVisit}>Log visit</Button>
         </div>

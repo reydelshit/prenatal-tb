@@ -38,6 +38,11 @@ export default function HProviderSideBar() {
             <AiOutlineSchedule className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
             Schedule Appointment
           </Link>
+
+          <Link className="p-2  mb-2 flex items-center gap-2" to="/medication">
+            <LiaNotesMedicalSolid className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
+            Medication
+          </Link>
           <Link className="p-2  mb-2 flex items-center gap-2" to="/records">
             <LuListChecks className="text-md h-[1.5rem] w-[1.5rem]" /> Records
           </Link>
