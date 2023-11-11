@@ -137,6 +137,7 @@ export default function Medication() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
+                  <TableHead>Type</TableHead>
                   <TableHead className="text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -163,6 +164,8 @@ export default function Medication() {
                               ' ' +
                               patient.patient_lastname}
                           </TableCell>
+
+                          <TableCell>{patient.patient_type}</TableCell>
                           <TableCell className="flex gap-2">
                             <Button
                               onClick={() =>

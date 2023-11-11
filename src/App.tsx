@@ -4,138 +4,111 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import moment from 'moment'
 import axios from 'axios'
 
+import { Button } from './components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import CardCompo from './components/dashboard/Card'
+
 interface DataItem {
   name: string
   total: number
 }
 
-const data = [
-  {
-    name: 'Jan',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Feb',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Mar',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Apr',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'May',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jun',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jul',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Aug',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Sep',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Oct',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Nov',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Dec',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-]
-
 export default function App() {
-  const [monthlyCalories, setMonthlyCalorieIntake] = useState<DataItem[]>([])
+  const [monthlyVisits, setMonthlyVisits] = useState<DataItem[]>([])
 
-  // const fetchCalorieIntake = () => {
-  //   axios
-  //     .get('http://localhost/hd_monitoring/meal-diary.php', {
-  //       params: {
-  //         user_id: localStorage.getItem('token'),
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log('calorie', res.data)
-
-  //       const entries = res.data
-
-  //       const monthlyCalories: { [key: string]: number } = {}
-
-  //       entries.forEach(
-  //         (entry: { created_at: moment.MomentInput; calorie_intake: any }) => {
-  //           const createdAt = moment(entry.created_at).format('MMM')
-  //           const calorieIntake = parseInt(entry.calorie_intake)
-
-  //           if (monthlyCalories[createdAt]) {
-  //             monthlyCalories[createdAt] += calorieIntake
-  //           } else {
-  //             monthlyCalories[createdAt] = calorieIntake
-  //           }
-  //         },
-  //       )
-
-  //       const monthlyData = Object.entries(monthlyCalories).map(
-  //         ([name, total]) => ({
-  //           name,
-  //           total,
-  //         }),
-  //       )
-
-  //       setMonthlyCalorieIntake(monthlyData)
-
-  //       console.log(monthlyData)
-  //     })
-  // }
+  const getMonthlyVisits = async () => {
+    axios
+      .get('http://localhost/prenatal-tb/visit.php', {
+        params: {
+          monthly_visits: 'yes',
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        setMonthlyVisits(res.data)
+      })
+  }
 
   useEffect(() => {
-    // fetchCalorieIntake()
+    getMonthlyVisits()
   }, [])
 
   return (
-    <div>
+    <div className="p-4">
       <Header
         title="Dashboard"
         description="View number of visits, appointments, and patients"
       />
 
       <div>
-        <div className="md:w-[50%] md:p-5 bg-white rounded-lg border-2">
-          <h1 className="mb-5 font-bold uppercase">Monthly Visitors</h1>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={data}>
-              <XAxis
-                dataKey="name"
-                stroke="#888888"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                stroke="#888888"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                tickFormatter={(value: string) => `${value}`}
-              />
-              <Bar dataKey="total" fill="#16A34A" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="flex gap-2 mb-4">
+          <CardCompo
+            title="TOTAL NUMBER OF PATIENTS"
+            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            icon="EMJI"
+            value="10"
+          />
+
+          <CardCompo
+            title=" TUBERCULOSIS PATIENTS"
+            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            icon="EMJI"
+            value="10"
+          />
+
+          <CardCompo
+            title="  PRENATAL PATIENTS"
+            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            icon="EMJI"
+            value="10"
+          />
+
+          <CardCompo
+            title="TOTAL NUMBER OF VISITS"
+            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            icon="EMJI"
+            value="10"
+          />
+        </div>
+
+        <div className="w-full flex gap-4 border-2 justify-between">
+          <div className="md:w-[70%] md:p-5 bg-white rounded-lg border-2">
+            <h1 className="mb-5 font-bold uppercase">Monthly Visits</h1>
+            <ResponsiveContainer width="100%" height={450}>
+              <BarChart data={monthlyVisits}>
+                <XAxis
+                  dataKey="name"
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value: string) => `${value}`}
+                />
+                <Bar dataKey="total" fill="#FACC15" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="w-[20rem] border-2">
+            <h1 className="font-bold my-2">Quick Actions</h1>
+
+            <div className="w-full flex flex-col">
+              <Button className="w-full mb-2">Add patient</Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

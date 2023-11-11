@@ -184,14 +184,14 @@ export default function ViewPatient() {
           ))}
         </div>
 
-        <div className="w-full mt-[2rem] flex flex-col items-center border-2">
+        <div className="w-full mt-[2rem] flex flex-col items-center">
           <div className="w-full px-[10.5rem] mt-[2rem] mb-2">
             <h1 className="self-start font-bold text-xl">
               Patient Medication List
             </h1>
           </div>
           <div className="w-[80%]">
-            <Table className="w-full border-2">
+            <Table className="w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>

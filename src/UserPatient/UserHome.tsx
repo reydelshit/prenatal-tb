@@ -155,49 +155,6 @@ export default function User() {
         </div>
       </div>
 
-      {/* <div className="flex gap-2 p-2">
-        <Card className="text-start bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Number of visit
-            </CardTitle>
-            emji
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">10</div>
-            <p className="text-xs text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Provident, accusantium?
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="text-start bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">yes</CardTitle>d
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">10</div>
-            <p className="text-xs text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Provident, accusantium?
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="text-start bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">yes</CardTitle>d
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">10</div>
-            <p className="text-xs text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Provident, accusantium?
-            </p>
-          </CardContent>
-        </Card>
-      </div> */}
       <div className="w-full justify-center flex mt-[2rem]">
         <div className="w-[100%]">
           <div className="w-full flex justify-between">

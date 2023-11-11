@@ -5,21 +5,9 @@ import { LuListChecks } from 'react-icons/lu'
 import { RxDashboard } from 'react-icons/rx'
 import { LiaNotesMedicalSolid } from 'react-icons/lia'
 import { AiOutlineQuestion } from 'react-icons/ai'
+import { MdOutlineMedication } from 'react-icons/md'
 import Logo from '@/assets/logo.png'
 export default function HProviderSideBar() {
-  const [width, setWidth] = useState<number>(5)
-  const [isMouseOver, setIsMouseOver] = useState<boolean>(false)
-
-  const handleMouseOver = () => {
-    setWidth(18)
-    setIsMouseOver(true)
-  }
-
-  const handleMouseLeave = () => {
-    setWidth(5)
-    setIsMouseOver(false)
-  }
-
   return (
     <div className="block max-w-[16rem] h-screen">
       <div className=" flex flex-col justify-between w-full h-full">
@@ -48,7 +36,7 @@ export default function HProviderSideBar() {
           </Link>
 
           <Link className="p-2  mb-2 flex items-center gap-2" to="/medication">
-            <LiaNotesMedicalSolid className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
+            <MdOutlineMedication className="text-md h-[1.5rem] w-[1.5rem]" />{' '}
             Medication
           </Link>
           <Link className="p-2  mb-2 flex items-center gap-2" to="/records">
