@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 type PatientDataTypes = {
   patient_id: number
@@ -55,6 +56,7 @@ type PatientMedication = {
   created_at: string
   description: string
   patient_id: number
+  status: string
 }
 
 export default function User() {
@@ -67,6 +69,9 @@ export default function User() {
   const user_id = localStorage.getItem('user_id')
   const navigate = useNavigate()
 
+  if (!patient_id) {
+    return (window.location.href = '/login')
+  }
   const getPatientData = () => {
     axios
       .get('http://localhost/prenatal-tb/patient.php', {
@@ -136,6 +141,30 @@ export default function User() {
     navigate(`/user/visit/${id}`)
   }
 
+  const handleStatusMedication = (id: number, status: string) => {
+    if (status === 'Done') {
+      axios
+        .put('http://localhost/prenatal-tb/medication.php', {
+          medication_id: id,
+          status: 'Ongoing',
+        })
+        .then((res) => {
+          console.log(res.data)
+          getAllPatientsMedication()
+        })
+    } else {
+      axios
+        .put('http://localhost/prenatal-tb/medication.php', {
+          medication_id: id,
+          status: 'Done',
+        })
+        .then((res) => {
+          console.log(res.data)
+          getAllPatientsMedication()
+        })
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="w-full px-2">
@@ -156,19 +185,23 @@ export default function User() {
               </span>
 
               <p>
-                See your number of visits and get notified when your appointment
-                is set
+                See your medications and get notified when your appointment is
+                set
               </p>
             </div>
           ))}
 
           <div className="p-2">
             <h1 className="text-1xl font-bold">Next Appointment</h1>
-            {nextAppointment.map((appointment, index) => (
-              <span key={index}>
-                {moment(appointment.start).format('LLLL')}
-              </span>
-            ))}
+            {nextAppointment.length > 0 ? (
+              nextAppointment.map((appointment, index) => (
+                <span key={index}>
+                  {moment(appointment.start).format('LLLL')}
+                </span>
+              ))
+            ) : (
+              <span>No next appointment</span>
+            )}
           </div>
         </div>
       </div>
@@ -215,7 +248,7 @@ export default function User() {
 
       <div className="w-full mt-[2rem] flex flex-col items-center">
         <div className="w-full mt-[2rem] mb-2">
-          <h1 className="self-start font-bold">Patient Medication List</h1>
+          <h1 className="self-start font-bold">Medications</h1>
         </div>
         <div className="w-[100%]">
           <Table className="w-full">
@@ -228,6 +261,8 @@ export default function User() {
                 <TableHead>Start</TableHead>
                 <TableHead>End</TableHead>
                 <TableHead>Description</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -242,6 +277,22 @@ export default function User() {
                       <TableCell>{moment(med.start).format('LL')}</TableCell>
                       <TableCell>{moment(med.end).format('LL')}</TableCell>
                       <TableCell>{med.description}</TableCell>
+                      <TableCell>{med.status}</TableCell>
+                      <TableCell>
+                        <div>
+                          <Button
+                            // disabled={med.status === 'Done' ? true : false}
+                            onClick={() =>
+                              handleStatusMedication(
+                                med.medication_id,
+                                med.status,
+                              )
+                            }
+                          >
+                            Set {med.status === 'Done' ? 'Ongoing' : 'Done'}
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   )
                 })

@@ -28,7 +28,7 @@ export default function HProviderRoot() {
 
   return (
     <div className="flex w-full flex-col justify-center items-center h-screen">
-      <div className="max-w-[1000px] h-full">
+      <div className="max-w-[1300px] h-full">
         <header className="h-[6rem] p-2 flex justify-end w-full mb-2 items-center gap-4">
           <Popover>
             <PopoverTrigger className="relative">
