@@ -14,8 +14,8 @@ import HProvider from './components/provider/HProvider.tsx'
 import HProviderRoot from './components/root/HProviderRoot.tsx'
 import UserRoot from './components/root/PatientRoot.tsx'
 import PatientRoot from './components/root/PatientRoot.tsx'
-import Visit from './UserPatient/Visit.tsx'
-import PatientLogVisit from './UserPatient/PatientLogVisit.tsx'
+import Visit from './Patient/Visit.tsx'
+import PatientLogVisit from './Patient/PatientLogVisit.tsx'
 import Medication from './components/Medication.tsx'
 import ViewPatient from './components/ViewPatient.tsx'
 
@@ -96,6 +96,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  { path: '/admin', element: <UserRoot /> },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

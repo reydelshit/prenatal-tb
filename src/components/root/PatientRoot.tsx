@@ -12,11 +12,14 @@ import { IoMdNotificationsOutline } from 'react-icons/io'
 
 import Notification from '../Notification'
 
-import User from '@/UserPatient/UserHome'
+import User from '@/Patient/UserHome'
 import { Button } from '../ui/button'
 
 export default function HProviderRoot() {
   const location = useLocation()
+
+  const user = localStorage.getItem('user')
+  const userType = localStorage.getItem('type')
 
   const handleLogout = () => {
     localStorage.removeItem('user')

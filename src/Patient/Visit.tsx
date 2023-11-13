@@ -32,11 +32,19 @@ export default function Visit() {
         setPatientAppointment(res.data)
 
         if (patient_id) {
-          const newUrl =
-            'http://localhost:5173/user/visit/' + res.data[0].appointment_id
+          if (res.data.length > 0) {
+            const newUrl =
+              'http://localhost:5173/user/visit/' + res.data[0].appointment_id
 
-          console.log('Redirecting to:', newUrl)
-          window.location.href = newUrl
+            console.log('Redirecting to:', newUrl)
+            window.location.href = newUrl
+          } else {
+            const newUrl =
+              'http://localhost:5173/user/visit/' + 'no-appointment-scheduled'
+
+            console.log('Redirecting to:', newUrl)
+            window.location.href = newUrl
+          }
         } else {
           console.error('User ID not found in localStorage')
           window.location.href = '/login'
