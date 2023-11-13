@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2023 at 05:03 PM
+-- Generation Time: Nov 13, 2023 at 10:15 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -46,7 +46,12 @@ INSERT INTO `appointments` (`appointment_id`, `appointment_title`, `start`, `end
 (21, 'reydel reydel - Tuberculosis', '2023-11-08', '2023-11-09', '1', 29, ''),
 (25, 'reyde reydeld - Tuberculosis', '2023-11-10', '2023-11-11', '1', 31, 'Done'),
 (29, 'reyde reydeld - Tuberculosis', '2023-11-14', '2023-11-15', '1', 31, 'Pending'),
-(30, 'reyde reydeld - Tuberculosis', '2023-11-07T06:00:00+08:00', '2023-11-07T06:30:00+08:00', '', 31, 'Pending');
+(30, 'reyde reydeld - Tuberculosis', '2023-11-07T06:00:00+08:00', '2023-11-07T06:30:00+08:00', '', 31, 'Pending'),
+(34, 'reyde reydeld - Tuberculosis', '2023-11-15', '2023-11-16', '1', 31, 'Pending'),
+(35, 'reyde reydeld - Tuberculosis', '2023-11-13', '2023-11-14', '1', 31, 'Pending'),
+(36, 'reyde reydeld - Tuberculosis', '2023-11-13', '2023-11-14', '1', 31, 'Pending'),
+(37, 'reyde reydeld - Tuberculosis', '2023-11-21', '2023-11-22', '1', 31, 'Pending'),
+(38, 'reyde reydeld - Tuberculosis', '2023-11-20', '2023-11-21', '1', 31, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -110,15 +115,16 @@ CREATE TABLE `medication` (
   `end` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `description` varchar(255) NOT NULL,
-  `patient_id` int(111) NOT NULL
+  `patient_id` int(111) NOT NULL,
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `medication`
 --
 
-INSERT INTO `medication` (`medication_id`, `patient_name`, `medication_name`, `dosage`, `frequency`, `start`, `end`, `created_at`, `description`, `patient_id`) VALUES
-(1, 'reyde reydeld', 'dasd', 'asdasd', 'Twice a day', '2023-11-15 00:00:00', '2023-11-24 00:00:00', '2023-11-11 14:00:28', 'dsada', 31);
+INSERT INTO `medication` (`medication_id`, `patient_name`, `medication_name`, `dosage`, `frequency`, `start`, `end`, `created_at`, `description`, `patient_id`, `status`) VALUES
+(1, 'reyde reydeld', 'dasd', 'asdasd', 'Twice a day', '2023-11-15 00:00:00', '2023-11-24 00:00:00', '2023-11-11 14:00:28', 'dsada', 31, 'Done');
 
 -- --------------------------------------------------------
 
@@ -143,7 +149,13 @@ INSERT INTO `notifications` (`notification_id`, `notification_message`, `receive
 (2, 'You have a new appointment on Nov 14, 2023 12:00 AM', 31, 1, '2023-11-11 05:45:27'),
 (3, 'You have a new appointment on Nov 7, 2023 6:00 AM', 31, 1, '2023-11-11 05:45:54'),
 (4, 'You have a new appointment on Nov 7, 2023 8:30 AM', 31, 1, '2023-11-11 05:46:16'),
-(5, 'You have a new appointment on Nov 7, 2023 10:00 AM', 31, 1, '2023-11-11 05:47:22');
+(5, 'You have a new appointment on Nov 7, 2023 10:00 AM', 31, 1, '2023-11-11 05:47:22'),
+(6, 'You have a new appointment on Nov 12, 2023 12:00 AM', 31, 1, '2023-11-13 06:16:40'),
+(7, 'You have a new appointment on Nov 15, 2023 12:00 AM', 31, 1, '2023-11-13 10:05:08'),
+(8, 'You have a new appointment on Nov 13, 2023 12:00 AM', 31, 1, '2023-11-13 10:07:20'),
+(9, 'You have a new appointment on Nov 13, 2023 12:00 AM', 31, 1, '2023-11-13 10:08:32'),
+(10, 'You have a new appointment on Nov 21, 2023 12:00 AM', 31, 1, '2023-11-13 10:11:37'),
+(11, 'You have a new appointment on Nov 20, 2023 12:00 AM', 31, 1, '2023-11-13 10:14:07');
 
 -- --------------------------------------------------------
 
@@ -326,7 +338,7 @@ ALTER TABLE `visits`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `appointment_id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `info_answers`
@@ -344,7 +356,7 @@ ALTER TABLE `medication`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `notification_id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `patient`

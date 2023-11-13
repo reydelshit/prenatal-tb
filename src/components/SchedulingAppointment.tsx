@@ -96,7 +96,7 @@ export default function SchedulingAppointment() {
       body: JSON.stringify({
         content: `Hello, ${patientName}! You have a new appointment on ${moment(
           appointment_date,
-        ).format('ll')}. Please be on time. Thank you!}`,
+        ).format('ll')}. Please be on time. Thank you!`,
         from: '+639097134971',
         to: '+639922330827',
       }),
