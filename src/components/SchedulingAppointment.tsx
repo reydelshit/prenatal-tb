@@ -63,6 +63,11 @@ export default function SchedulingAppointment() {
   const [selectInfo, setSelectInfo] = useState({} as any)
   const [appointments, setAppointments] = useState<EventInput[]>([])
 
+  const [patients, setPatients] = useState<PatientType[]>([])
+  const [handleSearchPatient, setHandleSearchPatient] = useState('')
+  const [patientID, setPatientID] = useState(0)
+  const [patientName, setPatientName] = useState('' as any)
+
   const getAppointments = async () => {
     await axios
       .get('http://localhost/prenatal-tb/appointment.php')
@@ -74,6 +79,31 @@ export default function SchedulingAppointment() {
       })
   }
 
+  const sendSMStoPatient = async (
+    patient_phone: number,
+
+    appointment_date: string,
+  ) => {
+    const apiKey =
+      'SigIVuuIwp98jJW4wVbDD9fmrVS544zMKBk0EXlVGdNrFWxTqGcB6E7RG2DPX-y7'
+    fetch('https://api.httpsms.com/v1/messages/send', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: `Hello, ${patientName}! You have a new appointment on ${moment(
+          appointment_date,
+        ).format('ll')}. Please be on time. Thank you!}`,
+        from: '+639097134971',
+        to: '+639922330827',
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+  }
   useEffect(() => {
     getAppointments()
 
@@ -118,6 +148,7 @@ export default function SchedulingAppointment() {
 
           if (res.data.status === 'success') {
             handleNotification(patient_id, selectInfo.startStr)
+            // sendSMStoPatient(patient_id, selectInfo.startStr)
           }
         })
     }
@@ -179,10 +210,6 @@ export default function SchedulingAppointment() {
     })
   }
 
-  const [patients, setPatients] = useState<PatientType[]>([])
-  const [handleSearchPatient, setHandleSearchPatient] = useState('')
-  const [patientID, setPatientID] = useState(0)
-
   const handleSelectedPatient = (selectedPatient: PatientType) => {
     console.log(selectedPatient)
 
@@ -192,6 +219,9 @@ export default function SchedulingAppointment() {
         selectedPatient.patient_lastname +
         ' - ' +
         selectedPatient.patient_type,
+    )
+    setPatientName(
+      selectedPatient.patient_name + ' ' + selectedPatient.patient_lastname,
     )
 
     setPatientID(selectedPatient.patient_id)
