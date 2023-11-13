@@ -196,7 +196,7 @@ export default function Medication() {
             </Table>
           </div>
           {showsPrescriptionForm && (
-            <div className="absolute w-full bg-white bg-opacity-75 h-full flex justify-center ">
+            <div className="absolute w-full bg-white bg-opacity-75 h-full flex justify-center z-30">
               <form
                 onSubmit={handleSubmitMedication}
                 className="bg-white w-[40%] border-2 h-[35rem] mt-[2rem] p-6 rounded-md"

@@ -89,14 +89,14 @@ export default function App() {
         <div className="flex gap-2 mb-4">
           <CardCompo
             title="TOTAL NUMBER OF PATIENTS"
-            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            description="The total number of patients registered in the system."
             icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
             value={patients.length.toString()}
           />
 
           <CardCompo
             title=" TUBERCULOSIS PATIENTS"
-            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            description="The total number of tuberculosis patients registered in the system."
             icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
             value={patients
               .filter((patient) => patient.patient_type === 'Tuberculosis')
@@ -105,7 +105,7 @@ export default function App() {
 
           <CardCompo
             title="PRENATAL PATIENTS"
-            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            description="The total number of prenatal patients registered in the system."
             icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
             value={patients
               .filter((patient) => patient.patient_type === 'Prenatal')
@@ -114,7 +114,7 @@ export default function App() {
 
           <CardCompo
             title="TOTAL NUMBER OF VISITS"
-            description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, accusantium?"
+            description="The total number of visits."
             icon={<GoNumber className="h-[1.5rem] w-[1.5rem]" />}
             value={totalVisits.length.toString()}
           />
