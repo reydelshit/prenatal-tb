@@ -115,7 +115,7 @@ export default function User() {
 
   const getAppointment = () => {
     axios
-      .get('http://localhost/prenatal-tb/appointment.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`, {
         params: {
           patient_id: patient_id,
           all_appointments: 'yes',
