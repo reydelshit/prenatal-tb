@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault()
 
     await axios
-      .get('http://localhost/prenatal-tb/login.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/login.php`, {
         params: loginDetails,
       })
       .then((res) => {

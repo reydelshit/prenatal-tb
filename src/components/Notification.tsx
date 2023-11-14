@@ -12,7 +12,7 @@ export default function Notification() {
   const getNotification = async () => {
     try {
       const response = await axios.get(
-        'http://localhost/prenatal-tb/notification.php',
+        `${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/notification.php`,
         {
           params: {
             receiver_id: localStorage.getItem('patient_id'),

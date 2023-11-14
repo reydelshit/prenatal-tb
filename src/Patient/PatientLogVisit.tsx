@@ -28,7 +28,7 @@ export default function PatientLogVisit() {
   const getAppointments = () => {
     console.log(id)
     axios
-      .get('http://localhost/prenatal-tb/patientlog.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patientlog.php`, {
         params: {
           appointment_id: id,
           // appointment_decider: 'ok',
@@ -53,7 +53,7 @@ export default function PatientLogVisit() {
 
   const handleLogVisit = () => {
     axios
-      .post('http://localhost/prenatal-tb/visit.php', {
+      .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/visit.php`, {
         patient_id: localStorage.getItem('patient_id'),
         appointment_id: id,
         // appointment_id: patientAppointment[0].appointment_id,

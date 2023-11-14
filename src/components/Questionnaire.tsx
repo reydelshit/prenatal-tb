@@ -45,7 +45,7 @@ export default function Questionnare() {
   const handleAddQuestion = () => {
     console.log(question, patientType)
     axios
-      .post('http://localhost/prenatal-tb/question.php', {
+      .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php`, {
         question_text: question,
         question_type: patientType,
       })
@@ -57,10 +57,12 @@ export default function Questionnare() {
   }
 
   const getAllQuestions = () => {
-    axios.get('http://localhost/prenatal-tb/question.php').then((res) => {
-      console.log(res.data)
-      setQuestions(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php`)
+      .then((res) => {
+        console.log(res.data)
+        setQuestions(res.data)
+      })
   }
 
   // const getSpecificQuestion = () => {
@@ -73,7 +75,7 @@ export default function Questionnare() {
 
   const handleDelete = (id: number) => {
     axios
-      .delete(`http://localhost/prenatal-tb/question.php/${id}`)
+      .delete(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php/${id}`)
       .then((res) => {
         console.log(res.data)
         getAllQuestions()
@@ -86,7 +88,7 @@ export default function Questionnare() {
     setShowUpdateModal(true)
 
     axios
-      .get('http://localhost/prenatal-tb/question.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php`, {
         params: {
           question_id: id,
         },
@@ -104,7 +106,7 @@ export default function Questionnare() {
 
   const handleUpdateQuestion = () => {
     axios
-      .put(`http://localhost/prenatal-tb/question.php`, {
+      .put(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php`, {
         question_type: patientType,
         question_text: questionTitleUpdate,
         question_id: storeID,

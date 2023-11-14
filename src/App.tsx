@@ -1,13 +1,14 @@
 import Header from './components/Header'
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
-import moment from 'moment'
+
 import axios from 'axios'
 
-import { Button } from './components/ui/button'
-import { AiOutlineNumber } from 'react-icons/ai'
 import CardCompo from './components/dashboard/Card'
 import { GoNumber } from 'react-icons/go'
+import dotenv from 'dotenv'
+
+// dotenv.config()
 
 import {
   Command,
@@ -46,9 +47,11 @@ export default function App() {
   const [patients, setPatients] = useState<PatientType[]>([])
   const navigate = useNavigate()
 
+  console.log(import.meta.env.VITE_PRENATAL_LOCAL_HOST)
+
   const getMonthlyVisits = async () => {
     axios
-      .get('http://localhost/prenatal-tb/visit.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/visit.php`, {
         params: {
           monthly_visits: 'yes',
         },
@@ -60,16 +63,20 @@ export default function App() {
   }
 
   const getAllVisits = async () => {
-    axios.get('http://localhost/prenatal-tb/visit.php').then((res) => {
-      console.log(res.data)
-      setTotalVisits(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/visit.php`)
+      .then((res) => {
+        console.log(res.data)
+        setTotalVisits(res.data)
+      })
   }
 
   const getAllPatients = async () => {
-    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
-      setPatients(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`)
+      .then((res) => {
+        setPatients(res.data)
+      })
   }
 
   useEffect(() => {

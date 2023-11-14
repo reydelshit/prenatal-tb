@@ -56,7 +56,7 @@ export default function ViewPatient() {
 
   const getPatientRecords = async () => {
     await axios
-      .get('http://localhost/prenatal-tb/patient.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`, {
         params: {
           patient_id: id,
         },
@@ -69,7 +69,7 @@ export default function ViewPatient() {
 
   const getPatientInfoAnswers = async () => {
     axios
-      .get('http://localhost/prenatal-tb/info_answer.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/info_answer.php`, {
         params: {
           patient_id: id,
         },
@@ -82,7 +82,7 @@ export default function ViewPatient() {
 
   const getAllPatientsMedication = async () => {
     axios
-      .get('http://localhost/prenatal-tb/medication.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`, {
         params: {
           patient_id: id,
         },

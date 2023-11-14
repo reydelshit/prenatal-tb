@@ -70,7 +70,7 @@ export default function SchedulingAppointment() {
 
   const getAppointments = async () => {
     await axios
-      .get('http://localhost/prenatal-tb/appointment.php')
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`)
       .then((res) => {
         setAppointments(
           res.data.map((appointment: EventInput[]) => appointment),
@@ -136,7 +136,7 @@ export default function SchedulingAppointment() {
       // console.log(selectInfo)
 
       axios
-        .post('http://localhost/prenatal-tb/appointment.php', {
+        .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`, {
           appointment_title: title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
@@ -156,7 +156,7 @@ export default function SchedulingAppointment() {
 
   const handleNotification = (patient_id: number, startDate: string) => {
     axios
-      .post('http://localhost/prenatal-tb/notification.php', {
+      .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/notification.php`, {
         receiver_id: patient_id,
         sender_id: localStorage.getItem('user'),
         notification_message: `You have a new appointment on ${moment(
@@ -177,7 +177,9 @@ export default function SchedulingAppointment() {
     ) {
       axios
         .delete(
-          `http://localhost/prenatal-tb/appointment.php/${clickInfo.event.id}`,
+          `${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php/${
+            clickInfo.event.id
+          }`,
         )
         .then((res) => {
           console.log(res.data)
@@ -192,7 +194,7 @@ export default function SchedulingAppointment() {
     // console.log('nice')
     // console.log(eventInfo.event)
     axios
-      .put('http://localhost/prenatal-tb/appointment.php', {
+      .put(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`, {
         appointment_id: eventChange.event.id,
         appointment_title: eventChange.event.title,
         start: eventChange.event.startStr,
@@ -228,9 +230,11 @@ export default function SchedulingAppointment() {
   }
 
   const getAllPatients = async () => {
-    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
-      setPatients(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`)
+      .then((res) => {
+        setPatients(res.data)
+      })
   }
 
   useEffect(() => {

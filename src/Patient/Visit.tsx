@@ -22,7 +22,7 @@ export default function Visit() {
 
   const getAppointment = () => {
     axios
-      .get('http://localhost/prenatal-tb/appointment.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`, {
         params: {
           patient_id: patient_id,
         },
@@ -34,13 +34,15 @@ export default function Visit() {
         if (patient_id) {
           if (res.data.length > 0) {
             const newUrl =
-              'http://localhost:5173/user/visit/' + res.data[0].appointment_id
+              `${import.meta.env.VITE_PRENATAL_DEFAULT_HOST}/user/visit/` +
+              res.data[0].appointment_id
 
             console.log('Redirecting to:', newUrl)
             window.location.href = newUrl
           } else {
             const newUrl =
-              'http://localhost:5173/user/visit/' + 'no-appointment-scheduled'
+              `${import.meta.env.VITE_PRENATAL_DEFAULT_HOST}/user/visit/` +
+              'no-appointment-scheduled'
 
             console.log('Redirecting to:', newUrl)
             window.location.href = newUrl

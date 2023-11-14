@@ -81,7 +81,7 @@ export default function HealthCareForm() {
     }))
 
     axios
-      .post('http://localhost/prenatal-tb/patient.php', {
+      .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`, {
         ...patientDemogprahy,
         patient_gender: patientGender,
         patient_type: patientType,
@@ -96,7 +96,7 @@ export default function HealthCareForm() {
       })
 
     // axios
-    //   .post('http://localhost/prenatal-tb/login.php', {
+    //   .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/login.php`, {
 
     //   })
     //   .then((res) => {
@@ -109,10 +109,12 @@ export default function HealthCareForm() {
   }
 
   const getAllQuestions = () => {
-    axios.get('http://localhost/prenatal-tb/question.php').then((res) => {
-      console.log(res.data)
-      setQuestions(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/question.php`)
+      .then((res) => {
+        console.log(res.data)
+        setQuestions(res.data)
+      })
   }
 
   useEffect(() => {

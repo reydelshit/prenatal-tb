@@ -63,16 +63,20 @@ export default function Medication() {
 
   const navigate = useNavigate()
   const getAllPatients = async () => {
-    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
-      setPatients(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`)
+      .then((res) => {
+        setPatients(res.data)
+      })
   }
 
   const getAllPatientsMedication = async () => {
-    axios.get('http://localhost/prenatal-tb/medication.php').then((res) => {
-      console.log(res.data)
-      setMedication(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`)
+      .then((res) => {
+        console.log(res.data)
+        setMedication(res.data)
+      })
   }
 
   useEffect(() => {
@@ -97,7 +101,7 @@ export default function Medication() {
     console.log('submit')
 
     axios
-      .post('http://localhost/prenatal-tb/medication.php', {
+      .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`, {
         ...medicationForPatient,
         patient_name: patientName,
         patient_id: storePatientID,

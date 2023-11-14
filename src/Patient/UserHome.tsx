@@ -74,7 +74,7 @@ export default function User() {
   }
   const getPatientData = () => {
     axios
-      .get('http://localhost/prenatal-tb/patient.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`, {
         params: {
           patient_id: patient_id,
           // user_id: user_id,
@@ -88,7 +88,7 @@ export default function User() {
 
   const getAllPatientsMedication = async () => {
     axios
-      .get('http://localhost/prenatal-tb/medication.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`, {
         params: {
           patient_id: patient_id,
         },
@@ -100,7 +100,7 @@ export default function User() {
 
   const getNextAppointment = () => {
     axios
-      .get('http://localhost/prenatal-tb/appointment.php', {
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/appointment.php`, {
         params: {
           patient_id: patient_id,
           next_appointment: 'yes',
@@ -144,7 +144,7 @@ export default function User() {
   const handleStatusMedication = (id: number, status: string) => {
     if (status === 'Done') {
       axios
-        .put('http://localhost/prenatal-tb/medication.php', {
+        .put(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`, {
           medication_id: id,
           status: 'Ongoing',
         })
@@ -154,7 +154,7 @@ export default function User() {
         })
     } else {
       axios
-        .put('http://localhost/prenatal-tb/medication.php', {
+        .put(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/medication.php`, {
           medication_id: id,
           status: 'Done',
         })

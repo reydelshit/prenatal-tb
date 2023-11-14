@@ -35,9 +35,11 @@ type PatientType = {
 export default function RecordsTable() {
   const [patients, setPatients] = useState<PatientType[]>([])
   const getAllPatients = async () => {
-    axios.get('http://localhost/prenatal-tb/patient.php').then((res) => {
-      setPatients(res.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/patient.php`)
+      .then((res) => {
+        setPatients(res.data)
+      })
   }
 
   useEffect(() => {
