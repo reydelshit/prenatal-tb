@@ -148,6 +148,17 @@ export default function HealthCareForm() {
     // console.log(tuberculosisQuestions)
   }
 
+  const handlePrintDiv = (divName: string) => {
+    let printContents = document.getElementById(divName)?.innerHTML
+    let originalContents = document.body.innerHTML
+
+    if (printContents) {
+      document.body.innerHTML = printContents
+      window.print()
+      document.body.innerHTML = originalContents
+    }
+  }
+
   return (
     <form onSubmit={handleSubmitPatientDemo} className="p-2">
       <div className="flex flex-col gap-2">
@@ -241,21 +252,30 @@ export default function HealthCareForm() {
       </div>
 
       <div className="py-2">
-        <Label className="font-bold">Patient Account</Label>
-        <Label className="block text-xs py-2">
-          Note: Enter the demographic information of the patient to set the
-          username and password. Upon submission the patient account will also
-          be uploaded in the database.
-        </Label>
+        <div className="flex items-center">
+          <div>
+            <Label className="font-bold">Patient Account</Label>
+            <Label className="block text-xs py-2">
+              Note: Enter the demographic information of the patient to set the
+              username and password. Upon submission the patient account will
+              also be uploaded in the database.
+            </Label>
+          </div>
 
-        <div>
-          <Label className="mr-2 font-bold">Username:</Label>
-          <span className="font-semibold text-sm">{patientUsername}</span>
+          <Button onClick={() => handlePrintDiv('id-for-print')}>
+            Export account
+          </Button>
         </div>
+        <div id="id-for-print">
+          <div>
+            <Label className="mr-2 font-bold">Username:</Label>
+            <span className="font-semibold text-sm">{patientUsername}</span>
+          </div>
 
-        <div>
-          <Label className="mr-2 font-bold">Password:</Label>
-          <span className="font-semibold text-sm">{patientPassword}</span>
+          <div>
+            <Label className="mr-2 font-bold">Password:</Label>
+            <span className="font-semibold text-sm">{patientPassword}</span>
+          </div>
         </div>
       </div>
 

@@ -5,9 +5,9 @@ export default function HProvider({ children }: { children: React.ReactNode }) {
     return (window.location.href = '/user')
   }
 
-  if (userType === 'admin') {
-    return (window.location.href = '/admin')
-  }
+  // if (userType === 'admin') {
+  //   return (window.location.href = '/admin')
+  // }
 
   if (userType === 'hprovider') {
     return <div>{children}</div>
