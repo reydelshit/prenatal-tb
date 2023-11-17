@@ -33,9 +33,7 @@ export default function Visit() {
 
         if (patient_id) {
           if (res.data.length > 0) {
-            const newUrl =
-              `${import.meta.env.VITE_PRENATAL_DEFAULT_HOST}/user/visit/` +
-              res.data[0].appointment_id
+            const newUrl = `/user/visit/` + res.data[0].appointment_id
 
             console.log('Redirecting to:', newUrl)
             window.location.href = newUrl
