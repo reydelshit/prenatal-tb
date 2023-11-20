@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import { Label } from './ui/label'
 import moment from 'moment'
 import { Button } from './ui/button'
+import DefaultProfile from '@/assets/default.jpg'
+
 type PatientType = {
   patient_id: number
   patient_name: string
@@ -15,7 +17,9 @@ type PatientType = {
   patient_gender: string
   patient_email: string
   patient_phone: string
-  patient_type: string
+  weight: string
+  height: string
+  patient_image: string
 }
 
 import {
@@ -115,55 +119,87 @@ export default function ViewPatient() {
         {patient.length > 0 &&
           patient.map((pat, index) => (
             <div
-              className="w-full flex justify-center p-2 flex-col items-center"
+              className="w-full flex justify-center p-2 items-center"
               key={index}
             >
-              <div className="flex gap-2 w-[80%] p-2">
-                <span className="block w-full border-b-2 p-2">
-                  <Label>First name</Label>
-                  <h1 className="font-semibold">{pat.patient_name}</h1>
-                </span>
+              <div className="w-[80%]">
+                <div className="flex w-[20%] p-2 h-full">
+                  <span className="block w-full p-2">
+                    <img
+                      className="rounded-md w-[15rem]  h-[15rem] object-contain"
+                      src={
+                        pat.patient_image ? pat.patient_image : DefaultProfile
+                      }
+                      alt=""
+                    />
+                  </span>
+                </div>
 
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Middle name</Label>
-                  <h1 className="font-semibold">{pat.patient_middlename}</h1>
-                </span>
+                <div className="w-full">
+                  <div className="flex gap-2 p-2">
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>First name</Label>
+                      <h1 className="font-semibold">{pat.patient_name}</h1>
+                    </span>
 
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Last name</Label>
-                  <h1 className="font-semibold">{pat.patient_lastname}</h1>
-                </span>
-              </div>
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Middle name</Label>
+                      <h1 className="font-semibold">
+                        {pat.patient_middlename}
+                      </h1>
+                    </span>
 
-              <div className="flex gap-2 w-[80%] p-2">
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Age</Label>
-                  <h1 className="font-semibold">{pat.patient_age}</h1>
-                </span>
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Last name</Label>
+                      <h1 className="font-semibold">{pat.patient_lastname}</h1>
+                    </span>
+                  </div>
 
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Birthday</Label>
-                  <h1 className="font-semibold">
-                    {moment(pat.patient_birthday).format('LL')}
-                  </h1>
-                </span>
+                  <div className="flex gap-2 p-2">
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Age</Label>
+                      <h1 className="font-semibold">{pat.patient_age}</h1>
+                    </span>
 
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Gender</Label>
-                  <h1 className="font-semibold">{pat.patient_gender}</h1>
-                </span>
-              </div>
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Birthday</Label>
+                      <h1 className="font-semibold">
+                        {moment(pat.patient_birthday).format('LL')}
+                      </h1>
+                    </span>
 
-              <div className="flex gap-2 w-[80%] p-2">
-                <span className="block w-full border-b-2  p-2">
-                  <Label>Phone</Label>
-                  <h1 className="font-semibold">{pat.patient_phone}</h1>
-                </span>
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Gender</Label>
+                      <h1 className="font-semibold">{pat.patient_gender}</h1>
+                    </span>
+                  </div>
 
-                <span className="block w-full border-b-2 p-2">
-                  <Label>Email</Label>
-                  <h1 className="font-semibold">{pat.patient_email}</h1>
-                </span>
+                  <div className="flex gap-2 p-2">
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Weight</Label>
+                      <h1 className="font-semibold">{pat.weight}</h1>
+                    </span>
+
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Height</Label>
+                      <h1 className="font-semibold">
+                        <h1 className="font-semibold">{pat.height}</h1>
+                      </h1>
+                    </span>
+                  </div>
+
+                  <div className="flex gap-2 p-2">
+                    <span className="block w-full border-b-2  p-2">
+                      <Label>Phone</Label>
+                      <h1 className="font-semibold">{pat.patient_phone}</h1>
+                    </span>
+
+                    <span className="block w-full border-b-2 p-2">
+                      <Label>Email</Label>
+                      <h1 className="font-semibold">{pat.patient_email}</h1>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           ))}

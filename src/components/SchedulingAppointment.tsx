@@ -38,7 +38,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import moment from 'moment'
-
+import DefaultProfile from '@/assets/default.jpg'
 type PatientType = {
   patient_id: number
   patient_name: string
@@ -50,6 +50,9 @@ type PatientType = {
   patient_email: string
   patient_phone: string
   patient_type: string
+  patient_image: string
+  weight: string
+  height: string
 }
 
 export default function SchedulingAppointment() {
@@ -306,9 +309,13 @@ export default function SchedulingAppointment() {
                   onChange={(e) => setHandleSearchPatient(e.target.value)}
                   placeholder="Search patient"
                 />
+                <Label className="text-end block my-5">
+                  Only shows 5 patients, search to show more
+                </Label>
                 <Table className="h-full">
                   <TableHeader>
                     <TableRow>
+                      <TableHead></TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Phone</TableHead>
                     </TableRow>
@@ -336,6 +343,18 @@ export default function SchedulingAppointment() {
                               className="cursor-pointer"
                             >
                               <TableCell>
+                                <img
+                                  className="rounded-full  w-[2rem]  h-[2rem] object-cover"
+                                  src={
+                                    patient.patient_image
+                                      ? patient.patient_image
+                                      : DefaultProfile
+                                  }
+                                  alt=""
+                                />
+                              </TableCell>
+
+                              <TableCell>
                                 {patient.patient_name +
                                   ' ' +
                                   patient.patient_middlename +
@@ -346,7 +365,7 @@ export default function SchedulingAppointment() {
                             </TableRow>
                           )
                         })
-                        .splice(0, 5)}
+                        .splice(0, 4)}
                   </TableBody>
                 </Table>
               </div>

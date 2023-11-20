@@ -18,6 +18,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../ui/input'
+import DefaultProfile from '@/assets/default.jpg'
+import moment from 'moment'
 
 type PatientType = {
   patient_id: number
@@ -30,6 +32,9 @@ type PatientType = {
   patient_email: string
   patient_phone: string
   patient_type: string
+  weight: string
+  height: string
+  patient_image: string
 }
 
 export default function RecordsTable() {
@@ -86,6 +91,7 @@ export default function RecordsTable() {
         <TableHeader>
           <TableRow>
             <TableHead>No.</TableHead>
+            <TableHead></TableHead>
             <TableHead>Firstname</TableHead>
             <TableHead>Middlename</TableHead>
             <TableHead>Lastname</TableHead>
@@ -121,11 +127,24 @@ export default function RecordsTable() {
                     onClick={() => handleNavigate(patient.patient_id)}
                   >
                     <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <img
+                        className="rounded-full  w-[4rem]  h-[4rem] object-cover"
+                        src={
+                          patient.patient_image
+                            ? patient.patient_image
+                            : DefaultProfile
+                        }
+                        alt=""
+                      />
+                    </TableCell>
 
                     <TableCell>{patient.patient_name}</TableCell>
                     <TableCell>{patient.patient_middlename}</TableCell>
                     <TableCell>{patient.patient_lastname}</TableCell>
-                    <TableCell>{patient.patient_birthday}</TableCell>
+                    <TableCell>
+                      {moment(patient.patient_birthday).format('LL')}
+                    </TableCell>
                     <TableCell>{patient.patient_age}</TableCell>
                     <TableCell>{patient.patient_gender}</TableCell>
                     <TableCell>{patient.patient_email}</TableCell>

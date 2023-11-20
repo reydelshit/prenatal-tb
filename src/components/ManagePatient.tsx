@@ -14,7 +14,7 @@ export default function ManagePatient() {
       />
 
       <div className="flex gap-4 p-2 ">
-        <div className="w-[70%]">
+        <div className="w-[50%]">
           <HealthCareForm />
         </div>
         <div className="w-full">

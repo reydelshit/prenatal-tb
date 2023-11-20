@@ -21,7 +21,7 @@ export default function Login() {
           console.log('success')
           console.log(res.data)
           localStorage.setItem('user', res.data[0].user_id)
-          localStorage.setItem('type', res.data[0].user_type)
+          localStorage.setItem('prenatal_userType', res.data[0].user_type)
 
           if (res.data[0].user_type === 'patient') {
             localStorage.setItem('patient_id', res.data[0].patient_id)

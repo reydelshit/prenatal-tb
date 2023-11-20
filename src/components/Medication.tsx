@@ -136,68 +136,69 @@ export default function Medication() {
                 placeholder="Search patient"
               />
             </div>
-
-            <Table className="h-full w-full mt-2">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead className="text-center">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {patients &&
-                  patients
-                    .filter(
-                      (patient) =>
-                        patient.patient_name.includes(handleSearchPatient) ||
-                        patient.patient_lastname.includes(
-                          handleSearchPatient,
-                        ) ||
-                        patient.patient_middlename.includes(
-                          handleSearchPatient,
-                        ),
-                    )
-                    .map((patient, index) => {
-                      return (
-                        <TableRow key={index} className="cursor-pointer">
-                          <TableCell>
-                            {patient.patient_name +
-                              ' ' +
-                              patient.patient_middlename +
-                              ' ' +
-                              patient.patient_lastname}
-                          </TableCell>
-
-                          <TableCell>{patient.patient_type}</TableCell>
-                          <TableCell className="flex gap-2">
-                            <Button
-                              onClick={() =>
-                                handleOpenForm(
-                                  patient.patient_name +
-                                    ' ' +
-                                    patient.patient_lastname,
-                                  patient.patient_id,
-                                )
-                              }
-                            >
-                              Add Prescription
-                            </Button>
-                            <Button
-                              onClick={() =>
-                                navigate(
-                                  `/records/patient/${patient.patient_id}`,
-                                )
-                              }
-                            >
-                              View Information
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+            <div className="border-2 mt-[2rem]">
+              <Table className="h-full w-full mt-2">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Stocks</TableHead>
+                    <TableHead className="text-center">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {patients &&
+                    patients
+                      .filter(
+                        (patient) =>
+                          patient.patient_name.includes(handleSearchPatient) ||
+                          patient.patient_lastname.includes(
+                            handleSearchPatient,
+                          ) ||
+                          patient.patient_middlename.includes(
+                            handleSearchPatient,
+                          ),
                       )
-                    })}
-              </TableBody>
-            </Table>
+                      .map((patient, index) => {
+                        return (
+                          <TableRow key={index} className="cursor-pointer">
+                            <TableCell>
+                              {patient.patient_name +
+                                ' ' +
+                                patient.patient_middlename +
+                                ' ' +
+                                patient.patient_lastname}
+                            </TableCell>
+
+                            <TableCell>{patient.patient_type}</TableCell>
+                            <TableCell className="flex gap-2">
+                              <Button
+                                onClick={() =>
+                                  handleOpenForm(
+                                    patient.patient_name +
+                                      ' ' +
+                                      patient.patient_lastname,
+                                    patient.patient_id,
+                                  )
+                                }
+                              >
+                                Add Prescription
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  navigate(
+                                    `/records/patient/${patient.patient_id}`,
+                                  )
+                                }
+                              >
+                                View Information
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
+                </TableBody>
+              </Table>
+            </div>
           </div>
           {showsPrescriptionForm && (
             <div className="absolute w-full bg-white bg-opacity-75 h-full flex justify-center z-30">

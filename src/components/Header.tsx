@@ -17,13 +17,13 @@ export default function Header({
   description: string
 }) {
   const handleLogout = () => {
-    localStorage.removeItem('type')
+    localStorage.removeItem('prenatal_userType')
     localStorage.removeItem('user')
 
     window.location.href = '/login'
   }
 
-  const userType = localStorage.getItem('type')
+  const userType = localStorage.getItem('prenatal_userType')
   return (
     <div className="h-[8rem] px-5 py-5 mb-2 ">
       <div className="flex justify-between items-center mb-[1.5rem]">

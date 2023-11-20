@@ -1,5 +1,5 @@
 export default function HProvider({ children }: { children: React.ReactNode }) {
-  const userType = localStorage.getItem('type')
+  const userType = localStorage.getItem('prenatal_userType')
 
   if (userType === 'patient') {
     return (window.location.href = '/user')

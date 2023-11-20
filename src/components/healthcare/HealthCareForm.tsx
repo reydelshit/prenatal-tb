@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
-
+import DefaultImage from '@/assets/default.jpg'
 type Questions = {
   id: number
   title: string
@@ -34,7 +34,10 @@ export default function HealthCareForm() {
     patientGender: '',
     patientPhone: '',
     patientEmail: '',
+    weight: '',
+    height: '',
   })
+  const [image, setImage] = useState<string | null>(null)
 
   const [tuberculosisQuestions, setTuberculosisQuestions] =
     useState<TuberculosisData>({})
@@ -90,20 +93,11 @@ export default function HealthCareForm() {
 
         user_username: patientUsername,
         user_password: patientPassword,
+        patient_image: image,
       })
       .then((res) => {
         console.log(res.data)
       })
-
-    // axios
-    //   .post(`${import.meta.env.VITE_PRENATAL_LOCAL_HOST}/login.php`, {
-
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data)
-    //   })
-
-    // clear input fields
 
     window.location.reload()
   }
@@ -142,10 +136,7 @@ export default function HealthCareForm() {
       })
     }
 
-    // console.log(tuberculosisQuestions)
     console.log(prenatalQuestions)
-
-    // console.log(tuberculosisQuestions)
   }
 
   const handlePrintDiv = (divName: string) => {
@@ -159,9 +150,35 @@ export default function HealthCareForm() {
     }
   }
 
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const data = new FileReader()
+    data.readAsDataURL(e.target.files![0])
+
+    data.onloadend = () => {
+      const base64 = data.result
+      if (base64) {
+        setImage(base64.toString())
+      }
+    }
+  }
+
   return (
     <form onSubmit={handleSubmitPatientDemo} className="p-2">
       <div className="flex flex-col gap-2">
+        <div className="mb-2">
+          <img
+            className="w-full h-[20rem] object-contain rounded-lg  mb-4"
+            src={image! ? image! : DefaultImage}
+          />
+          <Label>Patient Image</Label>
+          <Input
+            required
+            type="file"
+            accept="image/*"
+            onChange={handleChangeImage}
+            name="product_image"
+          />
+        </div>
         <div className="w-full">
           <Label>First name</Label>
           <Input
@@ -229,6 +246,29 @@ export default function HealthCareForm() {
           </Select>
         </div>
       </div>
+
+      <div className="flex gap-4">
+        <div className="w-full">
+          <Label>Weight.(55kg)</Label>
+          <Input
+            onChange={handleInputChange}
+            name="weight"
+            className="w-full"
+            required
+          />
+        </div>
+
+        <div className="w-full">
+          <Label>Height (5'5ft)</Label>
+          <Input
+            onChange={handleInputChange}
+            name="height"
+            className="w-full"
+            required
+          />
+        </div>
+      </div>
+
       <div className="flex gap-4">
         <div className="w-full">
           <Label>Phone no.</Label>
