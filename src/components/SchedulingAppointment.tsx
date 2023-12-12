@@ -70,6 +70,7 @@ export default function SchedulingAppointment() {
   const [handleSearchPatient, setHandleSearchPatient] = useState('')
   const [patientID, setPatientID] = useState(0)
   const [patientName, setPatientName] = useState('' as any)
+  const [patientPhone, setPatientPhone] = useState('' as any)
 
   const getAppointments = async () => {
     await axios
@@ -83,10 +84,11 @@ export default function SchedulingAppointment() {
   }
 
   const sendSMStoPatient = async (
-    patient_phone: number,
+    patient_phone: string,
 
     appointment_date: string,
   ) => {
+    console.log(patientPhone)
     const apiKey =
       'SigIVuuIwp98jJW4wVbDD9fmrVS544zMKBk0EXlVGdNrFWxTqGcB6E7RG2DPX-y7'
     fetch('https://api.httpsms.com/v1/messages/send', {
@@ -101,7 +103,7 @@ export default function SchedulingAppointment() {
           appointment_date,
         ).format('ll')}. Please be on time. Thank you!`,
         from: '+639097134971',
-        to: '+639922330827',
+        to: patient_phone,
       }),
     })
       .then((res) => res.json())
@@ -151,7 +153,7 @@ export default function SchedulingAppointment() {
 
           if (res.data.status === 'success') {
             handleNotification(patient_id, selectInfo.startStr)
-            // sendSMStoPatient(patient_id, selectInfo.startStr)
+            sendSMStoPatient(patientPhone, selectInfo.startStr)
           }
         })
     }
@@ -230,6 +232,7 @@ export default function SchedulingAppointment() {
     )
 
     setPatientID(selectedPatient.patient_id)
+    setPatientPhone(selectedPatient.patient_phone)
   }
 
   const getAllPatients = async () => {

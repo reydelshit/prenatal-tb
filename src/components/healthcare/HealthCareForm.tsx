@@ -271,7 +271,7 @@ export default function HealthCareForm() {
 
       <div className="flex gap-4">
         <div className="w-full">
-          <Label>Phone no.</Label>
+          <Label>Phone no. (+63 format)</Label>
           <Input
             onChange={handleInputChange}
             name="patient_phone"

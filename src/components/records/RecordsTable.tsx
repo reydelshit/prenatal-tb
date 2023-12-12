@@ -129,7 +129,7 @@ export default function RecordsTable() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
                       <img
-                        className="rounded-full  w-[4rem]  h-[4rem] object-cover"
+                        className="rounded-full  w-[3rem]  h-[3rem] object-cover"
                         src={
                           patient.patient_image
                             ? patient.patient_image

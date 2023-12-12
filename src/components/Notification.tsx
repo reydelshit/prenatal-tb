@@ -16,7 +16,6 @@ export default function Notification() {
         {
           params: {
             receiver_id: localStorage.getItem('patient_id'),
-            user_id: localStorage.getItem('user'),
           },
         },
       )

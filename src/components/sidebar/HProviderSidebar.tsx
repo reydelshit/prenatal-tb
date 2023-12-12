@@ -9,7 +9,7 @@ import { MdOutlineMedication } from 'react-icons/md'
 import Logo from '@/assets/logo.png'
 export default function HProviderSideBar() {
   return (
-    <div className="block max-w-[16rem] h-screen">
+    <div className="block max-w-[17rem] h-screen">
       <div className=" flex flex-col justify-between w-full h-full">
         <div className=" flex flex-col">
           <div className="flex w-full justify-center flex-col items-center mb-[2rem] my-[2rem]">
